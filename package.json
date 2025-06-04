@@ -1,0 +1,53 @@
+{
+    "name": "kunpocc-behaviortree",
+    "version": "0.0.1",
+    "description": "行为树",
+    "main": "./dist/kunpocc-behaviortree.cjs",
+    "module": "./dist/kunpocc-behaviortree.mjs",
+    "types": "./dist/kunpocc-behaviortree.d.ts",
+    "exports": {
+        ".": {
+            "require": "./dist/kunpocc-behaviortree.cjs",
+            "import": "./dist/kunpocc-behaviortree.mjs",
+            "types": "./dist/kunpocc-behaviortree.d.ts",
+            "default": "./dist/kunpocc-behaviortree.cjs"
+        },
+        "./min": {
+            "require": "./dist/kunpocc-behaviortree.min.cjs",
+            "import": "./dist/kunpocc-behaviortree.min.mjs"
+        }
+    },
+    "scripts": {
+        "clean": "rm -rf dist",
+        "build": "npm run clean && rollup -c rollup.config.mjs"
+    },
+    "files": [
+        "dist/kunpocc-behaviortree.cjs",
+        "dist/kunpocc-behaviortree.mjs",
+        "dist/kunpocc-behaviortree.min.cjs",
+        "dist/kunpocc-behaviortree.min.mjs",
+        "dist/kunpocc-behaviortree.d.ts",
+        "libs/lib.ali.api.d.ts",
+        "libs/lib.bytedance.api.d.ts",
+        "libs/lib.wx.api.d.ts"
+    ],
+    "author": "gongxh",
+    "license": "ISC",
+    "repository": {
+        "type": "gitlab",
+        "url": "https://github.com/Gongxh0901/kunpolibrary"
+    },
+    "publishConfig": {
+        "registry": "https://registry.npmjs.org/"
+    },
+    "devDependencies": {
+        "@rollup/plugin-terser": "^0.4.4",
+        "@rollup/plugin-typescript": "^12.1.2",
+        "@types/lodash": "^4.17.13",
+        "@types/node": "^22.10.2",
+        "rollup": "^4.28.1",
+        "rollup-plugin-dts": "^6.1.1",
+        "ts-node": "^10.9.2",
+        "tslib": "^2.6.2"
+    }
+}
