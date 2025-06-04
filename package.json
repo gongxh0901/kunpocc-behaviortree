@@ -34,8 +34,8 @@
     "author": "gongxh",
     "license": "ISC",
     "repository": {
-        "type": "gitlab",
-        "url": "https://github.com/Gongxh0901/kunpolibrary"
+        "type": "github",
+        "url": "https://github.com/Gongxh0901/kunpocc-behaviortree"
     },
     "publishConfig": {
         "registry": "https://registry.npmjs.org/"
