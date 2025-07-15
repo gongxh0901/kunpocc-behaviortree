@@ -123,7 +123,7 @@ export class WaitTicks extends Action {
  * 时间到后返回SUCCESS，否则返回RUNING
  */
 export class WaitTime extends Action {
-    /** 等待时间(毫秒 ms) @internal */
+    /** 等待时间(秒 s) @internal */
     private _duration: number;
     constructor(duration: number = 0) {
         super();
