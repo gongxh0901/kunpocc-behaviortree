@@ -32,7 +32,7 @@ export class BehaviorTree {
         ticker.openNodes.length = 0;
         this._root._execute(ticker);
         // 上次打开的节点
-        let lastOpenNodes = blackboard.get("openNodes", this._id) as BaseNode[];
+        let lastOpenNodes = (blackboard.get("openNodes", this._id) || []) as BaseNode[];
         // 当前打开的节点
         let currOpenNodes = ticker.openNodes;
         let start = 0;

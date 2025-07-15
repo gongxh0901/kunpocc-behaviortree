@@ -44,7 +44,11 @@ export class Ticker {
      * @param node 节点
      */
     public closeNode(node: BaseNode): void {
-        this.openNodes.pop();
+        // 查找并移除指定节点，而不是简单地pop
+        const index = this.openNodes.lastIndexOf(node);
+        if (index !== -1) {
+            this.openNodes.splice(index, 1);
+        }
     }
 
     /**

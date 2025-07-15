@@ -25,7 +25,7 @@ export class Agent {
      * 执行
      */
     public tick(): void {
-        this.tree.tick(this, this.blackboard, this.ticker);
+        this.tree.tick(this.ticker.subject, this.blackboard, this.ticker);
         if (this.blackboard.interrupt) {
             this.blackboard.interrupt = false;
 
