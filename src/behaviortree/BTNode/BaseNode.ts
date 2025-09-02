@@ -1,113 +1,86 @@
-import { createUUID, Status } from "../header";
-import { Ticker } from "../Ticker";
+import { BehaviorTree } from "../BehaviorTree";
+import { Status } from "../header";
+
 
 /**
  * 基础节点
- * 所有节点全部继承自 BaseNode
+ * 每个节点只管理自己需要的状态
  */
 export abstract class BaseNode {
-    /** 唯一标识 */
-    public id: string;
-    /** 子节点 */
-    public children: BaseNode[];
+    public readonly children: BaseNode[];
+    private _id: string;
+    private _isRunning: boolean;
+
+    set id(id: string) { this._id = id; }
+    get id(): string { return this._id }
 
     /**
      * 创建
      * @param children 子节点列表
      */
     constructor(children?: BaseNode[]) {
-        this.id = createUUID();
-        this.children = [];
-        if (!children) {
-            return;
-        }
-        for (let i = 0; i < children.length; i++) {
-            this.children.push(children[i]);
-        }
+        this._id = ""; // 临时值，将在树构造时被正确设置
+        this.children = children ? [...children] : [];
+        this._isRunning = false;
     }
 
     /**
      * 执行节点
-     * @param ticker 更新器
-     * @returns {Status} 状态
+     * @param tree 行为树
+     * @returns 状态
      */
-    public _execute(ticker: Ticker): Status {
-        /* ENTER */
-        this._enter(ticker);
-        if (!ticker.blackboard.get("isOpen", ticker.tree.id, this.id)) {
-            this._open(ticker);
+    public _execute<T>(tree: BehaviorTree<T>): Status {
+        // 首次执行时初始化
+        if (!this._isRunning) {
+            this._isRunning = true;
+            this.initialize(tree);
         }
-        let status = this._tick(ticker);
+
+        // 执行核心逻辑
+        const status = this.tick(tree);
+
+        // 执行完成时清理
         if (status !== Status.RUNNING) {
-            this._close(ticker);
+            this._isRunning = false;
+            this.cleanup(tree);
         }
-        this._exit(ticker);
+
         return status;
     }
 
     /**
-     * 进入节点
-     * @param ticker 更新器
-     * @internal
+     * 初始化节点（首次执行时调用）
+     * 子类重写此方法进行状态初始化
+     * @param tree 行为树
      */
-    public _enter(ticker: Ticker): void {
-        ticker.enterNode(this);
-        this.enter(ticker);
-    }
+    protected initialize<T>(tree: BehaviorTree<T>): void { }
 
     /**
-     * 打开节点
-     * @param ticker 更新器
-     * @internal
+     * 清理节点（执行完成时调用）
+     * 子类重写此方法进行状态清理
+     * @param tree 行为树
      */
-    public _open(ticker: Ticker): void {
-        ticker.openNode(this);
-        ticker.blackboard.set("isOpen", true, ticker.tree.id, this.id);
-        this.open(ticker);
-    }
+    protected cleanup<T>(tree: BehaviorTree<T>): void { }
 
     /**
-     * 更新节点
-     * @param ticker 更新器
-     * @internal
+     * 执行节点逻辑
+     * 子类必须实现此方法
+     * @param tree 行为树
+     * @returns 执行状态
      */
-    public _tick(ticker: Ticker): Status {
-        ticker.tickNode(this);
-        return this.tick(ticker);
-    }
+    public abstract tick<T>(tree: BehaviorTree<T>): Status;
 
     /**
-     * 关闭节点
-     * @param ticker 更新器
-     * @internal
+     * 递归清理节点及其所有子节点的状态
+     * 用于行为树中断时清理所有节点状态
      */
-    public _close(ticker: Ticker): void {
-        ticker.closeNode(this);
-        ticker.blackboard.set("isOpen", false, ticker.tree.id, this.id);
-        this.close(ticker);
-    }
+    public cleanupAll(): void {
+        // 清理基础状态
+        this._isRunning = false;
 
-    /**
-     * 退出节点
-     * @param ticker 更新器
-     * @internal
-     */
-    public _exit(ticker: Ticker): void {
-        ticker.exitNode(this);
-        this.exit(ticker);
+        // 递归清理所有子节点
+        for (const child of this.children) {
+            child.cleanupAll();
+        }
     }
-
-    enter(ticker: Ticker): void {
-
-    }
-    open(ticker: Ticker): void {
-
-    }
-    close(ticker: Ticker): void {
-
-    }
-    exit(ticker: Ticker): void {
-
-    }
-    abstract tick(ticker: Ticker): Status;
 }

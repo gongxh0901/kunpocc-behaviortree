@@ -1,15 +1,22 @@
 {
     "compilerOptions": {
-        "target": "es6",    // 
-        "module": "commonjs",    // 
-        "experimentalDecorators": true, // 启用ES装饰器。
+        "target": "es6",
+        "lib": ["es6", "dom"],
+        "module": "commonjs",
+        "experimentalDecorators": true, // 启用ES装饰器
         "strict": true,
-        "strictNullChecks": false,
+        "noImplicitAny": true,
+        "strictNullChecks": true,
+        "noUncheckedIndexedAccess": true,
+        "noImplicitOverride": true,
+        "useUnknownInCatchVariables": true,
+        "exactOptionalPropertyTypes": true,
+        "noPropertyAccessFromIndexSignature": true,
         "moduleResolution": "Node",
         "skipLibCheck": true,
         "esModuleInterop": true,
         "stripInternal": true,
-        "types": []
+        "types": ["node"]
     },
     "include": [
         "./src/**/*"

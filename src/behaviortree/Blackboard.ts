@@ -1,105 +1,70 @@
 /**
- * 行为树数据
+ * @Author: Gongxh
+ * @Date: 2025-09-02
+ * @Description: 行为树共享数据
+ * 
+ * 专门用于存储和管理行为树执行过程中的共享数据
+ * 使用 Symbol 作为键实现高性能且安全的键值存储
  */
-interface ITreeData {
-    nodeMemory: { [nodeScope: string]: any };
-    openNodes: any[];
+
+// 为了避免循环依赖，我们定义一个最小接口
+interface IBlackboardNode {
+    readonly id: string;
 }
 
-/** 平台 */
 export class Blackboard {
-    /** 行为树打断保护 */
-    public interruptDefend: boolean = false;
-    /** 打断行为树的标记 */
-    public interrupt: boolean = false;
-    /** 基础记忆 @internal */
-    private _baseMemory: any;
-    /** 树记忆 @internal */
-    private _treeMemory: { [treeScope: string]: ITreeData };
+    private readonly _data = new Map<IBlackboardNode, Map<string, any>>();
 
-    constructor() {
-        this._baseMemory = {};
-        this._treeMemory = {};
-    }
-
-    /**
-     * 清除
-     */
     public clear(): void {
-        this._baseMemory = {};
-        this._treeMemory = {};
+        this._data.clear();
     }
 
     /**
-     * 设置
-     * @param key 键
+     * 设置数据
+     * @param key 键名
      * @param value 值
-     * @param treeScope 树范围
-     * @param nodeScope 节点范围
+     * @param node 节点实例（用于生成唯一 Symbol）
      */
-    public set(key: string, value: any, treeScope?: string, nodeScope?: string): void {
-        let memory = this._getMemory(treeScope, nodeScope);
-        memory[key] = value;
+    public set<T>(key: string, value: T, node: IBlackboardNode): void {
+        let map = this._data.get(node);
+        if (!map) {
+            map = new Map();
+            this._data.set(node, map);
+        }
+        map.set(key, value);
     }
 
     /**
-     * 获取
-     * @param key 键
-     * @param treeScope 树范围
-     * @param nodeScope 节点范围
+     * 获取数据
+     * @param key 键名
+     * @param node 节点实例
      * @returns 值
      */
-    public get(key: string, treeScope?: string, nodeScope?: string): any {
-        let memory = this._getMemory(treeScope, nodeScope);
-        return memory[key];
+    public get<T>(key: string, node: IBlackboardNode): T | undefined {
+        return this._data.get(node)?.get(key) as T;
     }
 
     /**
-     * 获取树记忆
-     * @param treeScope 树范围
-     * @returns 树记忆
-     * @internal
+     * 检查是否存在指定键
+     * @param key 键名
+     * @param node 节点实例
+     * @returns 是否存在
      */
-    private _getTreeMemory(treeScope: string): ITreeData {
-        if (!this._treeMemory[treeScope]) {
-            this._treeMemory[treeScope] = {
-                nodeMemory: {},
-                openNodes: [],
-            };
-        }
-        return this._treeMemory[treeScope];
+    public has(key: string, node: IBlackboardNode): boolean {
+        return this._data.has(node) ? this._data.get(node)?.has(key) || false : false;
     }
 
     /**
-     * 获取节点记忆
-     * @param treeMemory 树记忆
-     * @param nodeScope 节点范围
-     * @returns 节点记忆
-     * @internal
+     * 删除指定键的数据
+     * @param key 键名
+     * @param node 节点实例
+     * @returns 是否删除成功
      */
-    private _getNodeMemory(treeMemory: ITreeData, nodeScope: string): { [key: string]: any } {
-        let memory = treeMemory.nodeMemory;
-        if (!memory[nodeScope]) {
-            memory[nodeScope] = {};
+    public delete(key: string, node: IBlackboardNode): boolean {
+        if (this.has(key, node)) {
+            this._data.get(node)?.delete(key);
+            return true;
         }
-        return memory[nodeScope];
-    }
-
-    /**
-     * 获取记忆
-     * @param treeScope 树范围
-     * @param nodeScope 节点范围
-     * @returns 记忆
-     * @internal
-     */
-    private _getMemory(treeScope?: string, nodeScope?: string): { [key: string]: any } {
-        let memory = this._baseMemory;
-        if (treeScope) {
-            memory = this._getTreeMemory(treeScope);
-            if (nodeScope) {
-                memory = this._getNodeMemory(memory, nodeScope);
-            }
-        }
-        return memory;
+        return false;
     }
 }

@@ -26,9 +26,9 @@ export default [
                 compilerOptions: {
                     target: "es6",
                     module: "es6",
-                    experimentalDecorators: true, // 启用ES装饰器。
+                    experimentalDecorators: true, // 启用ES装饰器
                     strict: true,
-                    strictNullChecks: false,
+                    strictNullChecks: true,
                     moduleResolution: "Node",
                     skipLibCheck: true,
                     esModuleInterop: true,
@@ -59,9 +59,9 @@ export default [
                 compilerOptions: {
                     target: "es6",
                     module: "es6",
-                    experimentalDecorators: true, // 启用ES装饰器。
+                    experimentalDecorators: true, // 启用ES装饰器
                     strict: true,
-                    strictNullChecks: false,
+                    strictNullChecks: true,
                     moduleResolution: "Node",
                     skipLibCheck: true,
                     esModuleInterop: true,

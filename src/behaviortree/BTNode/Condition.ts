@@ -1,24 +1,20 @@
+import type { BehaviorTree } from "../BehaviorTree";
 import { Status } from "../header";
-import { Ticker } from "../Ticker";
-import { Action } from "./Action";
+import { BaseNode } from "./BaseNode";
 
 /**
  * 条件节点
+ * 根据条件函数返回SUCCESS或FAILURE
  */
-export class Condition extends Action {
+export class Condition extends BaseNode {
     /** 执行函数 @internal */
-    private _func: (subject: any) => boolean = null;
+    private readonly _func: (subject: any) => boolean;
     constructor(func: (subject: any) => boolean) {
         super();
         this._func = func;
     }
 
-    /**
-     * 执行
-     * @param {Ticker} ticker 
-     * @returns {Status} 
-     */
-    public tick(ticker: Ticker): Status {
-        return this._func(ticker.subject) ? Status.SUCCESS : Status.FAILURE;
+    public tick<T>(tree: BehaviorTree<T>): Status {
+        return this._func?.(tree.subject) ? Status.SUCCESS : Status.FAILURE;
     }
 }
