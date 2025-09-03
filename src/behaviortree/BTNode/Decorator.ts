@@ -4,10 +4,9 @@
  * @Description: 装饰节点 装饰节点下必须包含子节点
  */
 
-import type { BehaviorTree } from "../BehaviorTree";
 import { Status } from "../header";
 import { Decorator, NumericDecorator } from "./AbstractNodes";
-import { BaseNode } from "./BaseNode";
+import { IBTNode } from "./BTNode";
 
 /**
  * 结果反转节点
@@ -16,8 +15,8 @@ import { BaseNode } from "./BaseNode";
  * 第一个Child Node节点, 返回 SUCCESS, 本Node向自己的Parent Node也返回 FAILURE
  */
 export class Inverter extends Decorator {
-    public tick<T>(tree: BehaviorTree<T>): Status {
-        const status = this.children[0]!._execute(tree);
+    public tick(): Status {
+        const status = this.children[0]!._execute();
 
         if (status === Status.SUCCESS) {
             return Status.FAILURE;
@@ -41,44 +40,35 @@ export class LimitTime extends NumericDecorator {
      * @param child 子节点 
      * @param max 最大时间 (秒) 默认1秒
      */
-    constructor(child: BaseNode, max: number = 1) {
+    constructor(child: IBTNode, max: number = 1) {
         super(child, max * 1000);
     }
 
-    protected override initialize<T>(tree: BehaviorTree<T>): void {
-        super.initialize(tree);
+    protected override open(): void {
         this._value = Date.now();
     }
 
-    public tick<T>(tree: BehaviorTree<T>): Status {
+    public tick(): Status {
         const currentTime = Date.now();
-
         if (currentTime - this._value > this._max) {
             return Status.FAILURE;
         }
-
-        return this.children[0]!._execute(tree);
+        return this.children[0]!._execute();
     }
 }
 
 /**
  * 次数限制节点
  * 必须且只能包含一个子节点
- * 次数限制内, 返回子节点的状态, 次数达到后, 直接返回失败
+ * 次数超过后, 直接返回失败; 次数未超过, 返回子节点状态
  */
-export class LimitTimes extends NumericDecorator {
-    public tick<T>(tree: BehaviorTree<T>): Status {
-        if (this._value >= this._max) {
+export class LimitTicks extends NumericDecorator {
+    public tick(): Status {
+        this._value++;
+        if (this._value > this._max) {
             return Status.FAILURE;
         }
-        const status = this.children[0]!._execute(tree);
-        if (status !== Status.RUNNING) {
-            this._value++;
-            if (this._value < this._max) {
-                return Status.RUNNING;
-            }
-        }
-        return status;
+        return this.children[0]!._execute();
     }
 }
 
@@ -89,9 +79,9 @@ export class LimitTimes extends NumericDecorator {
  * 次数超过之后返回子节点状态，否则返回 RUNNING
  */
 export class Repeat extends NumericDecorator {
-    public tick<T>(tree: BehaviorTree<T>): Status {
+    public tick(): Status {
         // 执行子节点
-        const status = this.children[0]!._execute(tree);
+        const status = this.children[0]!._execute();
         // 如果子节点完成（成功或失败），增加计数
         if (status === Status.SUCCESS || status === Status.FAILURE) {
             this._value++;
@@ -112,8 +102,8 @@ export class Repeat extends NumericDecorator {
  * 子节点成功 计数+1
  */
 export class RepeatUntilFailure extends NumericDecorator {
-    public tick<T>(tree: BehaviorTree<T>): Status {
-        const status = this.children[0]!._execute(tree);
+    public tick(): Status {
+        const status = this.children[0]!._execute();
         if (status === Status.FAILURE) {
             return Status.FAILURE;
         }
@@ -136,9 +126,9 @@ export class RepeatUntilFailure extends NumericDecorator {
  * 子节点失败, 计数+1
  */
 export class RepeatUntilSuccess extends NumericDecorator {
-    public tick<T>(tree: BehaviorTree<T>): Status {
+    public tick(): Status {
         // 执行子节点
-        const status = this.children[0]!._execute(tree);
+        const status = this.children[0]!._execute();
         if (status === Status.SUCCESS) {
             return Status.SUCCESS;
         }

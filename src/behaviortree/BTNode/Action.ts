@@ -1,16 +1,16 @@
-import type { BehaviorTree } from "../BehaviorTree";
 import { Status } from "../header";
-import { BaseNode } from "./BaseNode";
+import { LeafNode } from "./AbstractNodes";
+import { IBTNode } from "./BTNode";
 
-export class Action extends BaseNode {
-    protected _func: (subject?: any) => Status;
-    constructor(func: (subject?: any) => Status) {
+export class Action extends LeafNode {
+    protected _func: (node: IBTNode) => Status;
+    constructor(func: (node: IBTNode) => Status) {
         super();
         this._func = func;
     }
 
-    public tick<T>(tree: BehaviorTree<T>): Status {
-        return this._func?.(tree.subject) ?? Status.SUCCESS;
+    public tick(): Status {
+        return this._func?.(this) ?? Status.SUCCESS;
     }
 }
 
@@ -19,7 +19,7 @@ export class Action extends BaseNode {
  * 次数内，返回RUNNING
  * 超次，返回SUCCESS
  */
-export class WaitTicks extends BaseNode {
+export class WaitTicks extends LeafNode {
     private _max: number;
     private _value: number;
 
@@ -29,12 +29,12 @@ export class WaitTicks extends BaseNode {
         this._value = 0;
     }
 
-    protected override initialize<T>(tree: BehaviorTree<T>): void {
-        super.initialize(tree);
+    protected override open(): void {
+        super.open();
         this._value = 0;
     }
 
-    public tick<T>(tree: BehaviorTree<T>): Status {
+    public tick(): Status {
         if (++this._value >= this._max) {
             return Status.SUCCESS;
         }
@@ -46,7 +46,7 @@ export class WaitTicks extends BaseNode {
  * 时间等待节点 时间(秒) 
  * 时间到后返回SUCCESS，否则返回RUNNING
  */
-export class WaitTime extends BaseNode {
+export class WaitTime extends LeafNode {
     private _max: number;
     private _value: number = 0;
     constructor(duration: number = 0) {
@@ -54,12 +54,12 @@ export class WaitTime extends BaseNode {
         this._max = duration * 1000;
     }
 
-    protected override initialize<T>(tree: BehaviorTree<T>): void {
-        super.initialize(tree);
+    protected override open(): void {
+        super.open();
         this._value = new Date().getTime();
     }
 
-    public tick<T>(tree: BehaviorTree<T>): Status {
+    public tick(): Status {
         const currTime = new Date().getTime();
         if (currTime - this._value >= this._max) {
             return Status.SUCCESS;

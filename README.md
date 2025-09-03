@@ -156,8 +156,8 @@ enum Status {
 
    ```typescript
    // 在节点中使用黑板
-   class CustomAction extends BaseNode {
-       tick<T>(tree: BehaviorTree<T>): Status {
+   class CustomAction extends BTNode {
+       tick: Status {
            // 获取数据 - 使用节点实例作为命名空间
            const data = tree.blackboard.get<string>("key", this);
            

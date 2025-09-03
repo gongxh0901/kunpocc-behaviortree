@@ -1,5 +1,6 @@
-import { Blackboard } from "./Blackboard";
-import { BaseNode } from "./BTNode/BaseNode";
+import { Blackboard, IBlackboard } from "./Blackboard";
+import { IBTNode } from "./BTNode/BTNode";
+import { Status } from "./header";
 
 /**
  * 行为树
@@ -9,36 +10,23 @@ export class BehaviorTree<T> {
     /** 
      * @internal
      */
-    private _root: BaseNode;
+    private _root: IBTNode;
     /** 
      * @internal
      */
-    private _blackboard: Blackboard;
-    /** 
-     * @internal
-     */
-    private _subject: T;
+    private _blackboard: IBlackboard;
 
-    /** 
-     * 节点ID计数器，每个树实例独立管理
-     * @internal
-     */
-    private _nodeIdCounter: number = 0;
-
-    get root(): BaseNode { return this._root; }
-    get blackboard() { return this._blackboard }
-    get subject(): T { return this._subject; }
+    get root(): IBTNode { return this._root; }
+    get blackboard(): IBlackboard { return this._blackboard }
 
     /**
      * constructor
-     * @param subject 主体
+     * @param entity 实体
      * @param root 根节点
      */
-    constructor(subject: T, root: BaseNode) {
+    constructor(entity: T, root: IBTNode) {
         this._root = root;
-        this._blackboard = new Blackboard();
-        this._subject = subject;
-
+        this._blackboard = new Blackboard(undefined, entity);
         // 构造时就初始化所有节点ID，避免运行时检查
         this._initializeAllNodeIds(this._root);
     }
@@ -46,17 +34,8 @@ export class BehaviorTree<T> {
     /**
      * 执行行为树
      */
-    public tick(): void {
-        this._root._execute(this);
-    }
-
-    /**
-     * 生成节点ID
-     * 每个树实例独立管理节点ID，避免全局状态污染
-     * @internal
-     */
-    private _generateNodeId(): string {
-        return `${++this._nodeIdCounter}`;
+    public tick(): Status {
+        return this._root._execute();
     }
 
     /**
@@ -65,13 +44,12 @@ export class BehaviorTree<T> {
      * @param node 要初始化的节点
      * @internal
      */
-    private _initializeAllNodeIds(node: BaseNode): void {
+    private _initializeAllNodeIds(node: IBTNode, parent?: IBTNode): void {
         // 设置当前节点ID
-        node.id = this._generateNodeId();
-
+        node._initialize(this._blackboard, parent ? parent.blackboard : this._blackboard);
         // 递归设置所有子节点ID
         for (const child of node.children) {
-            this._initializeAllNodeIds(child);
+            this._initializeAllNodeIds(child, node);
         }
     }
 
@@ -83,15 +61,5 @@ export class BehaviorTree<T> {
         this._blackboard.clear();
         // 重置所有节点的状态
         this._root.cleanupAll();
-    }
-
-    /**
-     * 重置指定记忆节点的记忆状态
-     * 用于精确控制记忆节点的重置，而不影响其他状态
-     * @param node 记忆节点
-     */
-    public resetMemoryNode(node: BaseNode): void {
-        // 通过黑板标记该节点需要重置记忆
-        this._blackboard.set(`reset_memory`, true, node);
     }
 }

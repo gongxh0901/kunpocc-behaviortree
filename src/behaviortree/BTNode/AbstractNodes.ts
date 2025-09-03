@@ -4,67 +4,70 @@
  * @Description: 抽象节点基类
  */
 
-import { BehaviorTree } from "../BehaviorTree";
-import { BaseNode } from "./BaseNode";
+import { IBlackboard } from "../Blackboard";
+import { BTNode, IBTNode } from "./BTNode";
 
 /**
- * 可以包含多个节点的集合装饰器基类
+ * 叶子节点 基类
+ * 没有子节点
  */
-export abstract class Composite extends BaseNode {
-    constructor(...children: BaseNode[]) {
-        super(children);
+export abstract class LeafNode extends BTNode {
+    constructor() {
+        super([]);
     }
 }
 
 /**
- * 修饰节点基类
- * 只能包含一个子节点
+ * 修饰节点 基类
+ * 有且仅有一个子节点
  */
-export abstract class Decorator extends BaseNode {
-    constructor(child: BaseNode) {
+export abstract class Decorator extends BTNode {
+    constructor(child: IBTNode) {
         super([child]);
     }
 }
 
 /**
- * 数值型装饰节点基类
- * 包含最大值和当前值的通用逻辑，适用于所有需要数值计数的装饰节点
+ * 组合节点 基类
+ * 多个子节点
+ */
+export abstract class Composite extends BTNode {
+    constructor(...children: IBTNode[]) {
+        super(children);
+    }
+}
+
+/**
+ * 数值型修饰节点 基类
+ * 包含最大值和当前值的通用逻辑，适用于所有需要数值计数的修饰节点
  */
 export abstract class NumericDecorator extends Decorator {
     protected readonly _max: number;
     protected _value: number = 0;
 
-    constructor(child: BaseNode, max: number = 1) {
+    constructor(child: IBTNode, max: number = 1) {
         super(child);
         this._max = max;
     }
 
-    protected override initialize<T>(tree: BehaviorTree<T>): void {
-        super.initialize(tree);
+    protected override open(): void {
+        super.open();
         this._value = 0;
     }
 }
 
 /**
- * 记忆装饰节点基类
+ * 记忆修饰节点基类
+ * 只有记忆节点才需要设置局部数据
  */
 export abstract class MemoryComposite extends Composite {
-    protected runningIndex = 0;
-
-    protected override initialize<T>(tree: BehaviorTree<T>): void {
-        super.initialize(tree);
-        // 检查是否需要重置记忆
-        const shouldReset = tree.blackboard.get(`reset_memory`, this);
-        if (shouldReset) {
-            this.runningIndex = 0;
-            tree.blackboard.delete(`reset_memory`, this);
-        }
+    public override _initialize(global: IBlackboard, branch: IBlackboard): void {
+        super._initialize(global, branch);
+        this._local = branch.createChild();
     }
 
-    /**
-     * 重置记忆状态，下次执行时将从第一个子节点开始
-     */
-    public resetMemory(): void {
-        this.runningIndex = 0;
+    protected override open(): void {
+        super.open();
+        this.set(`__nMemoryRunningIndex`, 0);
     }
 }

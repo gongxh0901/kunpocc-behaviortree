@@ -4,7 +4,7 @@ export { BehaviorTree } from "./behaviortree/BehaviorTree";
 export { Blackboard } from "./behaviortree/Blackboard";
 export * from "./behaviortree/BTNode/AbstractNodes";
 export * from "./behaviortree/BTNode/Action";
-export { BaseNode as Node } from "./behaviortree/BTNode/BaseNode";
+export { IBTNode } from "./behaviortree/BTNode/BTNode";
 export * from "./behaviortree/BTNode/Composite";
 export { Condition } from "./behaviortree/BTNode/Condition";
 export * from "./behaviortree/BTNode/Decorator";
