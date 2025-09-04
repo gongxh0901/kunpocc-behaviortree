@@ -4,7 +4,7 @@ import { Status } from "../header";
 export interface IBTNode {
     readonly children: IBTNode[];
     /** 本节点的的黑板引用 */
-    blackboard: IBlackboard;
+    local: IBlackboard;
     /**
      * 初始化节点
      * @param root 树根节点的黑板
@@ -33,6 +33,9 @@ export interface IBTNode {
      */
     setGlobal<T>(key: string, value: T): void;
     getGlobal<T>(key: string): T;
+
+    /** 获取关联的实体 */
+    getEntity<T>(): T;
 }
 
 
@@ -126,6 +129,10 @@ export abstract class BTNode implements IBTNode {
         }
     }
 
+    public getEntity<T>(): T {
+        return this._local.getEntity();
+    }
+
     /**
      * 设置获取全局黑板数据
      */
@@ -160,10 +167,6 @@ export abstract class BTNode implements IBTNode {
     }
 
     public get local(): IBlackboard {
-        return this._local;
-    }
-
-    public get blackboard(): IBlackboard {
         return this._local;
     }
 }

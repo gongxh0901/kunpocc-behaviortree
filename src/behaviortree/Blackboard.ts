@@ -11,6 +11,7 @@
  * 黑板数据接口
  */
 export interface IBlackboard {
+    getEntity<T>(): T;
     get<T>(key: string): T;
     set<T>(key: string, value: T): void;
     delete(key: string): void;
@@ -29,8 +30,8 @@ export class Blackboard implements IBlackboard {
 
     /** 实体 */
     private readonly _entity: any;
-    public get entity(): any {
-        return this._entity || this.parent?.entity;
+    public getEntity<T>(): T {
+        return this._entity;
     }
 
     constructor(parent?: Blackboard, entity?: any) {
@@ -38,8 +39,8 @@ export class Blackboard implements IBlackboard {
         if (parent) {
             parent.children.add(this);
         }
-
-        this._entity = entity;
+        // 优先使用传入的 entity，如果没有则从父级继承
+        this._entity = entity !== undefined ? entity : (parent?._entity ?? null);
     }
 
     /** 核心: 查找链实现 */

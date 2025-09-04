@@ -46,7 +46,7 @@ export class BehaviorTree<T> {
      */
     private _initializeAllNodeIds(node: IBTNode, parent?: IBTNode): void {
         // 设置当前节点ID
-        node._initialize(this._blackboard, parent ? parent.blackboard : this._blackboard);
+        node._initialize(this._blackboard, parent ? parent.local : this._blackboard);
         // 递归设置所有子节点ID
         for (const child of node.children) {
             this._initializeAllNodeIds(child, node);
