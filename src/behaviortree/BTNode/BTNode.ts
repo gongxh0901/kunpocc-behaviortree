@@ -12,9 +12,11 @@ export interface IBTNode {
      */
     _initialize(root: IBlackboard, parent: IBlackboard): void;
 
+    /**
+     * @internal
+     */
     _execute(): Status;
     tick(): Status;
-    cleanupAll(): void;
 
     /**
      * 优先写入自己的黑板数据, 如果没有则写入父节点的黑板数据
@@ -48,25 +50,14 @@ export abstract class BTNode implements IBTNode {
 
     /** 树根节点的黑板引用 */
     protected _root!: IBlackboard;
+
     /** 本节点的的黑板引用 可能等于 _parent */
     protected _local!: IBlackboard;
 
-    private _isRunning: boolean;
-    /**
-     * 创建
-     * @param children 子节点列表
-     */
     constructor(children?: IBTNode[]) {
         this.children = children ? [...children] : [];
-        this._isRunning = false;
     }
 
-    /**
-     * 打开节点
-     * @param tree 行为树
-     * 
-     * @internal
-     */
     public _initialize(root: IBlackboard, parent: IBlackboard): void {
         this._root = root;
         // 在需要的节点中重写，创建新的local
@@ -74,13 +65,13 @@ export abstract class BTNode implements IBTNode {
     }
 
     /**
-     * 执行节点
      * @internal
      */
     public _execute(): Status {
         // 首次执行时初始化
-        if (!this._isRunning) {
-            this._isRunning = true;
+        const isRunning = this._local.openNodes.get(this) || false;
+        if (!isRunning) {
+            this._local.openNodes.set(this, true);
             this.open();
         }
 
@@ -89,7 +80,7 @@ export abstract class BTNode implements IBTNode {
 
         // 执行完成时清理
         if (status !== Status.RUNNING) {
-            this._isRunning = false;
+            this._local.openNodes.delete(this);
             this.close();
         }
 
@@ -114,20 +105,6 @@ export abstract class BTNode implements IBTNode {
      * 子类重写此方法进行状态清理
      */
     protected close(): void { }
-
-    /**
-     * 递归清理节点及其所有子节点的状态
-     * 用于行为树中断时清理所有节点状态
-     */
-    public cleanupAll(): void {
-        // 清理基础状态
-        this._isRunning = false;
-
-        // 递归清理所有子节点
-        for (const child of this.children) {
-            child.cleanupAll();
-        }
-    }
 
     public getEntity<T>(): T {
         return this._local.getEntity();

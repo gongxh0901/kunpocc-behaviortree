@@ -58,8 +58,6 @@ export class BehaviorTree<T> {
      * 清空黑板并重置所有节点状态
      */
     public reset(): void {
-        this._blackboard.clear();
-        // 重置所有节点的状态
-        this._root.cleanupAll();
+        this._blackboard.clean();
     }
 }

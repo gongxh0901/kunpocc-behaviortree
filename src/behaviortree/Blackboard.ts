@@ -6,6 +6,7 @@
  * 专门用于存储和管理行为树执行过程中的共享数据
  */
 
+import { IBTNode } from "../kunpocc-behaviortree";
 
 /** 
  * 黑板数据接口
@@ -16,8 +17,10 @@ export interface IBlackboard {
     set<T>(key: string, value: T): void;
     delete(key: string): void;
     has(key: string): boolean;
-    clear(): void;
+    clean(): void;
     createChild(scope?: number): IBlackboard;
+    /** @internal */
+    openNodes: WeakMap<IBTNode, boolean>;
 }
 
 /**
@@ -27,6 +30,12 @@ export class Blackboard implements IBlackboard {
     private readonly _data = new Map<string, any>();
     public parent?: Blackboard | undefined;
     public children = new Set<Blackboard>();
+
+    /** 
+     * 正在运行中的节点
+     * @internal
+     */
+    public openNodes = new WeakMap<IBTNode, boolean>();
 
     /** 实体 */
     private readonly _entity: any;
@@ -69,24 +78,12 @@ export class Blackboard implements IBlackboard {
         return new Blackboard(this);
     }
 
-    public clear(): void {
-        // 从父黑板中删除自己
-        if (this.parent) {
-            this.parent.children.delete(this);
-        }
-
-        // 清理所有子黑板
-        this.children.forEach(child => {
-            child.parent = undefined;
-        });
-
-        this.children.clear();
-
-        // 断开父级引用
-        this.parent = undefined;
-
+    public clean(): void {
         // 清空当前黑板数据
         this._data.clear();
+        
+        // 重置运行状态
+        this.openNodes = new WeakMap<IBTNode, boolean>();
     }
 }
 
