@@ -5,7 +5,7 @@ import dts from 'rollup-plugin-dts';
 export default [
     {
         // 生成未压缩的 JS 文件
-        input: 'src/kunpocc-behaviortree.ts',
+        input: 'src/index.ts',
         external: ['cc', 'fairygui-cc'],
         output: [
             {
@@ -38,7 +38,7 @@ export default [
     },
     {
         // 生成压缩的 JS 文件
-        input: 'src/kunpocc-behaviortree.ts',
+        input: 'src/index.ts',
         external: ['cc', 'fairygui-cc'],
         output: [
             {
@@ -72,7 +72,7 @@ export default [
     },
     {
         // 生成声明文件的配置
-        input: 'src/kunpocc-behaviortree.ts',
+        input: 'src/index.ts',
         output: {
             file: 'dist/kunpocc-behaviortree.d.ts',
             format: 'es'

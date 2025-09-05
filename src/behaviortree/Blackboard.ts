@@ -6,7 +6,7 @@
  * 专门用于存储和管理行为树执行过程中的共享数据
  */
 
-import { IBTNode } from "../kunpocc-behaviortree";
+import { IBTNode } from "./BTNode/BTNode";
 
 /** 
  * 黑板数据接口
@@ -81,9 +81,14 @@ export class Blackboard implements IBlackboard {
     public clean(): void {
         // 清空当前黑板数据
         this._data.clear();
-        
+
         // 重置运行状态
         this.openNodes = new WeakMap<IBTNode, boolean>();
+
+        // 递归清理所有子黑板
+        for (const child of this.children) {
+            child.clean();
+        }
     }
 }
 
