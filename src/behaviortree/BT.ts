@@ -155,3 +155,8 @@ export namespace BT {
         return metadata.maxChildren === -1 || currentChildCount < metadata.maxChildren;
     }
 }
+
+let _global = globalThis || window || global;
+(_global as any)["getKunpoBTNodeMaps"] = function () {
+    return BT.getAllNodeMetadata();
+};
