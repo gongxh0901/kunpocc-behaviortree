@@ -1,24 +1,20 @@
+import { BT } from "../BT";
 import { Status } from "../header";
 import { LeafNode } from "./AbstractNodes";
-import { IBTNode } from "./BTNode";
-
-export class Action extends LeafNode {
-    protected _func: (node: IBTNode) => Status;
-    constructor(func: (node: IBTNode) => Status) {
-        super();
-        this._func = func;
-    }
-
-    public tick(): Status {
-        return this._func?.(this) ?? Status.SUCCESS;
-    }
-}
 
 /**
  * 次数等待节点(无子节点)
  * 次数内，返回RUNNING
  * 超次，返回SUCCESS
  */
+@BT.ActionNode({
+    name: "等待次数",
+    group: "等待行为",
+    description: "等待指定次数后返回成功",
+    parameters: [
+        { name: "maxTicks", type: BT.ParamType.int, description: "最大等待次数", defaultValue: 0, required: true }
+    ]
+})
 export class WaitTicks extends LeafNode {
     private _max: number;
     private _value: number;
@@ -46,6 +42,14 @@ export class WaitTicks extends LeafNode {
  * 时间等待节点 时间(秒) 
  * 时间到后返回SUCCESS，否则返回RUNNING
  */
+@BT.ActionNode({
+    name: "等待时间",
+    group: "等待行为",
+    description: "等待指定时间(秒)后返回成功",
+    parameters: [
+        { name: "duration", type: BT.ParamType.float, description: "等待时间(秒)", defaultValue: 0, required: true }
+    ]
+})
 export class WaitTime extends LeafNode {
     private _max: number;
     private _value: number = 0;

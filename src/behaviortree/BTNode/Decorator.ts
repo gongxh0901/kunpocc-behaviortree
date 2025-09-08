@@ -4,6 +4,7 @@
  * @Description: 装饰节点 装饰节点下必须包含子节点
  */
 
+import { BT } from "../BT";
 import { Status } from "../header";
 import { Decorator, NumericDecorator } from "./AbstractNodes";
 import { IBTNode } from "./BTNode";
@@ -14,6 +15,12 @@ import { IBTNode } from "./BTNode";
  * 第一个Child Node节点, 返回 FAILURE, 本Node向自己的Parent Node也返回 SUCCESS
  * 第一个Child Node节点, 返回 SUCCESS, 本Node向自己的Parent Node也返回 FAILURE
  */
+@BT.DecoratorNode({
+    name: "反转器",
+    group: "基础装饰节点",
+    description: "反转子节点的执行结果，成功变失败，失败变成功",
+    parameters: []
+})
 export class Inverter extends Decorator {
     public tick(): Status {
         const status = this.children[0]!._execute();
@@ -34,6 +41,14 @@ export class Inverter extends Decorator {
  * 规定时间内, 根据Child Node的结果, 本节点向自己的父节点也返回相同的结果
  * 超时后, 直接返回 FAILURE
  */
+@BT.DecoratorNode({
+    name: "时间限制器",
+    group: "基础装饰节点",
+    description: "限制子节点执行时间，超时返回失败",
+    parameters: [
+        { name: "max", type: BT.ParamType.float, description: "最大时间(秒)", defaultValue: 1, required: true }
+    ]
+})
 export class LimitTime extends NumericDecorator {
     /**
      * 时间限制节点
@@ -62,6 +77,14 @@ export class LimitTime extends NumericDecorator {
  * 必须且只能包含一个子节点
  * 次数超过后, 直接返回失败; 次数未超过, 返回子节点状态
  */
+@BT.DecoratorNode({
+    name: "次数限制器",
+    group: "基础装饰节点",
+    description: "限制子节点执行次数，超过次数返回失败",
+    parameters: [
+        { name: "max", type: BT.ParamType.int, description: "最大次数", defaultValue: 1, required: true }
+    ]
+})
 export class LimitTicks extends NumericDecorator {
     public tick(): Status {
         this._value++;
@@ -78,6 +101,14 @@ export class LimitTicks extends NumericDecorator {
  * 子节点是成功或失败，累加计数
  * 次数超过之后返回子节点状态，否则返回 RUNNING
  */
+@BT.DecoratorNode({
+    name: "重复器",
+    group: "基础装饰节点",
+    description: "重复执行子节点指定次数",
+    parameters: [
+        { name: "max", type: BT.ParamType.int, description: "重复次数", defaultValue: 1, required: true }
+    ]
+})
 export class Repeat extends NumericDecorator {
     public tick(): Status {
         // 执行子节点
@@ -101,6 +132,14 @@ export class Repeat extends NumericDecorator {
  * 
  * 子节点成功 计数+1
  */
+@BT.DecoratorNode({
+    name: "重复直到失败",
+    group: "基础装饰节点",
+    description: "重复执行子节点直到失败或达到最大次数",
+    parameters: [
+        { name: "max", type: BT.ParamType.int, description: "最大重试次数", defaultValue: 1, required: true }
+    ]
+})
 export class RepeatUntilFailure extends NumericDecorator {
     public tick(): Status {
         const status = this.children[0]!._execute();
@@ -125,6 +164,14 @@ export class RepeatUntilFailure extends NumericDecorator {
  * 
  * 子节点失败, 计数+1
  */
+@BT.DecoratorNode({
+    name: "重复直到成功",
+    group: "基础装饰节点",
+    description: "重复执行子节点直到成功或达到最大次数",
+    parameters: [
+        { name: "max", type: BT.ParamType.int, description: "最大重试次数", defaultValue: 1, required: true }
+    ]
+})
 export class RepeatUntilSuccess extends NumericDecorator {
     public tick(): Status {
         // 执行子节点
@@ -140,5 +187,34 @@ export class RepeatUntilSuccess extends NumericDecorator {
             }
         }
         return Status.RUNNING;
+    }
+}
+
+/**
+ * 权重装饰节点
+ */
+@BT.DecoratorNode({
+    name: "权重装饰器",
+    group: "基础装饰节点",
+    description: "权重装饰节点",
+    parameters: [
+        { name: "weight", type: BT.ParamType.float, description: "权重", defaultValue: 1, required: true }
+    ]
+})
+export class WeightDecorator extends Decorator {
+    private _weight: number;
+
+    constructor(child: IBTNode, weight?: number) {
+        super(child);
+        // 优先使用构造函数参数，否则使用装饰器默认参数
+        this._weight = weight || 1;
+    }
+
+    public tick(): Status {
+        return this.children[0]!._execute();
+    }
+
+    public get weight(): number {
+        return this._weight;
     }
 }
