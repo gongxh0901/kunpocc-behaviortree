@@ -11,11 +11,10 @@ import { WeightDecorator } from "./Decorator";
  * 
  * 遇到 RUNNING 返回 RUNNING 下次从该节点开始
  */
-@BT.CompositeNode({
+@BT.CompositeNode("MemSelector", {
     name: "记忆选择节点",
     group: "基础组合节点",
-    description: "记住上次运行位置的选择节点，从记忆位置开始执行",
-    parameters: []
+    desc: "记住上次运行位置的选择节点，从记忆位置开始执行",
 })
 export class MemSelector extends MemoryComposite {
     public tick(): Status {
@@ -42,11 +41,10 @@ export class MemSelector extends MemoryComposite {
  * 
  * 遇到 RUNNING 返回 RUNNING 下次从该节点开始
  */
-@BT.CompositeNode({
+@BT.CompositeNode("MemSequence", {
     name: "记忆顺序节点",
     group: "基础组合节点",
-    description: "记住上次运行位置的序列节点，从记忆位置开始执行",
-    parameters: []
+    desc: "记住上次运行位置的序列节点，从记忆位置开始执行",
 })
 export class MemSequence extends MemoryComposite {
     public tick(): Status {
@@ -71,11 +69,10 @@ export class MemSequence extends MemoryComposite {
  * 返回第一个不为 FAILURE 的子节点状态
  * 否则返回 FAILURE
  */
-@BT.CompositeNode({
+@BT.CompositeNode("Selector", {
     name: "选择节点",
     group: "基础组合节点",
-    description: "依次执行子节点，直到找到成功或运行中的节点",
-    parameters: []
+    desc: "依次执行子节点，直到找到成功或运行中的节点",
 })
 export class Selector extends Composite {
     public tick(): Status {
@@ -95,11 +92,10 @@ export class Selector extends Composite {
  * 随机选择一个子节点执行
  * 返回子节点状态
  */
-@BT.CompositeNode({
+@BT.CompositeNode("RandomSelector", {
     name: "随机选择节点",
     group: "基础组合节点",
-    description: "随机选择一个子节点执行",
-    parameters: [],
+    desc: "随机选择一个子节点执行",
 })
 export class RandomSelector extends Composite {
     private _totalWeight: number = 0;
@@ -153,11 +149,10 @@ export class RandomSelector extends Composite {
  * 遇到 SUCCESS 继续下一个
  * 否则返回子节点状态
  */
-@BT.CompositeNode({
+@BT.CompositeNode("Sequence", {
     name: "顺序节点",
     group: "基础组合节点",
-    description: "依次执行所有子节点，全部成功才返回成功",
-    parameters: []
+    desc: "依次执行所有子节点，全部成功才返回成功",
 })
 export class Sequence extends Composite {
     public tick(): Status {
@@ -176,11 +171,10 @@ export class Sequence extends Composite {
  * 并行节点 从上到下执行 全部执行一遍
  * 返回优先级 FAILURE > RUNNING > SUCCESS
  */
-@BT.CompositeNode({
+@BT.CompositeNode("Parallel", {
     name: "并行节点",
     group: "基础组合节点",
-    description: "同时执行所有子节点，全部成功才返回成功",
-    parameters: []
+    desc: "同时执行所有子节点，全部成功才返回成功",
 })
 export class Parallel extends Composite {
     public tick(): Status {
@@ -201,11 +195,10 @@ export class Parallel extends Composite {
  * 并行节点 从上到下执行 全部执行一遍
  * 返回优先级 SUCCESS > RUNNING > FAILURE
  */
-@BT.CompositeNode({
+@BT.CompositeNode("ParallelAnySuccess", {
     name: "并行任意成功",
     group: "基础组合节点",
-    description: "同时执行所有子节点，任意一个成功即返回成功",
-    parameters: []
+    desc: "同时执行所有子节点，任意一个成功即返回成功",
 })
 export class ParallelAnySuccess extends Composite {
     public tick(): Status {

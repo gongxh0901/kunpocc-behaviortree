@@ -32,16 +32,16 @@ export namespace BT {
      * 参数描述接口
      */
     export interface ParameterInfo {
-        /** 参数类型 */
-        type: ParamType;
         /** 参数名称 */
         name: string;
+        /** 参数类型 */
+        type: ParamType;
         /** 参数描述 */
         description?: string;
         /** 默认值 */
         defaultValue?: any;
-        /** 是否必需 */
-        required?: boolean;
+        /** 步进 针对数字类型的变更的最小单位 */
+        step?: number,
     }
 
     /**
@@ -50,6 +50,8 @@ export namespace BT {
     export interface NodeMetadata {
         /** 节点名称 */
         name: string;
+        /** 节点类名 */
+        className: string;
         /** 节点分组 */
         group: string;
         /** 节点类型 */
@@ -65,19 +67,50 @@ export namespace BT {
     /**
      * 节点元数据存储
      */
-    const NODE_METADATA_MAP = new Map<string, NodeMetadata>();
+    const NODE_METADATA_MAP = new Map<any, NodeMetadata>();
+
+    /**
+     * 节点参数存储
+     */
+    const NODE_PARAMETERS_MAP = new Map<any, ParameterInfo[]>();
+
+    /**
+     * 节点属性装饰器
+     */
+    export function prop(paramInfo: Omit<ParameterInfo, "name">) {
+        return function (target: any, propertyKey: string) {
+            const ctor = target.constructor;
+            if (!NODE_PARAMETERS_MAP.has(ctor)) {
+                NODE_PARAMETERS_MAP.set(ctor, []);
+            }
+            const parameters = NODE_PARAMETERS_MAP.get(ctor)!;
+            parameters.push({
+                ...paramInfo,
+                name: propertyKey
+            });
+        };
+    }
 
     /**
      * 行为节点装饰器
+     * @param name 节点的类名 编辑器导出数据中的节点名字
+     * @param info.group 节点在编辑器中的分组
+     * @param info.name 节点在编辑器中的中文名
+     * @param info.desc 节点描述信息
      */
-    export function ActionNode(metadata: Omit<NodeMetadata, "type" | "maxChildren">) {
+    export function ActionNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
+            const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {
-                ...metadata,
+                className: name,
+                group: info?.group || '未分组',
+                name: info?.name || '',
+                description: info?.desc || '',
                 type: Type.Action,
                 maxChildren: 0,
+                parameters
             };
-            NODE_METADATA_MAP.set(constructor.name, fullMetadata);
+            NODE_METADATA_MAP.set(constructor, fullMetadata);
             return constructor;
         };
     }
@@ -85,14 +118,19 @@ export namespace BT {
     /**
      * 条件节点装饰器
      */
-    export function ConditionNode(metadata: Omit<NodeMetadata, "type" | "maxChildren">) {
+    export function ConditionNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
+            const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {
-                ...metadata,
+                className: name,
+                group: info?.group || '未分组',
+                name: info?.name || '',
+                description: info?.desc || '',
                 type: Type.Condition,
                 maxChildren: 0,
+                parameters
             };
-            NODE_METADATA_MAP.set(constructor.name, fullMetadata);
+            NODE_METADATA_MAP.set(constructor, fullMetadata);
             return constructor;
         };
     }
@@ -100,14 +138,19 @@ export namespace BT {
     /**
      * 组合节点装饰器
      */
-    export function CompositeNode(metadata: Omit<NodeMetadata, "type" | "maxChildren">) {
+    export function CompositeNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
+            const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {
-                ...metadata,
+                className: name,
+                group: info?.group || '未分组',
+                name: info?.name || '',
+                description: info?.desc || '',
                 type: Type.Composite,
-                maxChildren: -1
+                maxChildren: -1,
+                parameters
             };
-            NODE_METADATA_MAP.set(constructor.name, fullMetadata);
+            NODE_METADATA_MAP.set(constructor, fullMetadata);
             return constructor;
         };
     }
@@ -115,44 +158,28 @@ export namespace BT {
     /**
      * 装饰节点装饰器
      */
-    export function DecoratorNode(metadata: Omit<NodeMetadata, "type" | "maxChildren">) {
+    export function DecoratorNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
+            const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {
-                ...metadata,
+                className: name,
+                group: info?.group || '未分组',
+                name: info?.name || '',
+                description: info?.desc || '',
                 type: Type.Decorator,
-                maxChildren: 1
+                maxChildren: 1,
+                parameters
             };
-            NODE_METADATA_MAP.set(constructor.name, fullMetadata);
+            NODE_METADATA_MAP.set(constructor, fullMetadata);
             return constructor;
         };
     }
 
     /**
-     * 获取节点元数据
-     */
-    export function getNodeMetadata(nodeName: string): NodeMetadata | undefined {
-        return NODE_METADATA_MAP.get(nodeName);
-    }
-
-    /**
      * 获取所有节点元数据
      */
-    export function getAllNodeMetadata(): Map<string, NodeMetadata> {
+    export function getAllNodeMetadata(): Map<any, NodeMetadata> {
         return new Map(NODE_METADATA_MAP);
-    }
-
-    /**
-     * 判断节点是否允许子节点
-     */
-    export function canHaveChildren(metadata: NodeMetadata): boolean {
-        return metadata.maxChildren !== 0;
-    }
-
-    /**
-     * 判断节点是否可以添加更多子节点
-     */
-    export function canAddMoreChildren(metadata: NodeMetadata, currentChildCount: number): boolean {
-        return metadata.maxChildren === -1 || currentChildCount < metadata.maxChildren;
     }
 }
 

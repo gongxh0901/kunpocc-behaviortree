@@ -7,15 +7,13 @@ import { LeafNode } from "./AbstractNodes";
  * 次数内，返回RUNNING
  * 超次，返回SUCCESS
  */
-@BT.ActionNode({
+@BT.ActionNode("WaitTicks", {
     name: "等待次数",
     group: "等待行为",
-    description: "等待指定次数后返回成功",
-    parameters: [
-        { name: "maxTicks", type: BT.ParamType.int, description: "最大等待次数", defaultValue: 0, required: true }
-    ]
+    desc: "等待指定次数后返回成功",
 })
 export class WaitTicks extends LeafNode {
+    @BT.prop({ type: BT.ParamType.int, description: "最大等待次数", defaultValue: 0, step: 1 })
     private _max: number;
     private _value: number;
 
@@ -42,15 +40,13 @@ export class WaitTicks extends LeafNode {
  * 时间等待节点 时间(秒) 
  * 时间到后返回SUCCESS，否则返回RUNNING
  */
-@BT.ActionNode({
+@BT.ActionNode("WaitTime", {
     name: "等待时间",
     group: "等待行为",
-    description: "等待指定时间(秒)后返回成功",
-    parameters: [
-        { name: "duration", type: BT.ParamType.float, description: "等待时间(秒)", defaultValue: 0, required: true }
-    ]
+    desc: "等待指定时间(秒)后返回成功",
 })
 export class WaitTime extends LeafNode {
+    @BT.prop({ type: BT.ParamType.float, description: "等待时间(秒)", defaultValue: 0, step: 0.01 })
     private _max: number;
     private _value: number = 0;
     constructor(duration: number = 0) {

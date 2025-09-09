@@ -42,14 +42,7 @@ export abstract class Composite extends BTNode {
  * 包含最大值和当前值的通用逻辑，适用于所有需要数值计数的修饰节点
  */
 export abstract class NumericDecorator extends Decorator {
-    protected readonly _max: number;
     protected _value: number = 0;
-
-    constructor(child: IBTNode, max: number = 1) {
-        super(child);
-        this._max = max;
-    }
-
     protected override open(): void {
         super.open();
         this._value = 0;

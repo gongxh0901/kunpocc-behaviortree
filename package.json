@@ -19,7 +19,7 @@
     },
     "scripts": {
         "clean": "rm -rf dist",
-        "copy": "cp -r dist/* ./../kunpo-esc/demo/node_modules/kunpocc-behaviortree/dist/",
+        "copy": "cp -r dist/* ./../kunpo-ecs/demo/node_modules/kunpocc-behaviortree/dist/",
         "build": "npm run clean && rollup -c rollup.config.mjs && npm run copy"
     },
     "files": [
