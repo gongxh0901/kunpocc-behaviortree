@@ -51,7 +51,7 @@ export class WaitTime extends LeafNode {
     private _value: number = 0;
     constructor(duration: number = 0) {
         super();
-        this._max = duration * 1000;
+        this._max = duration;
     }
 
     protected override open(): void {
@@ -61,7 +61,7 @@ export class WaitTime extends LeafNode {
 
     public tick(): Status {
         const currTime = new Date().getTime();
-        if (currTime - this._value >= this._max) {
+        if (currTime - this._value >= this._max * 1000) {
             return Status.SUCCESS;
         }
         return Status.RUNNING;

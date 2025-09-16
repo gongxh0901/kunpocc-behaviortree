@@ -56,7 +56,7 @@ export class LimitTime extends NumericDecorator {
      */
     constructor(child: IBTNode, max: number = 1) {
         super(child);
-        this._max = max * 1000;
+        this._max = max;
     }
 
     protected override open(): void {
@@ -65,7 +65,7 @@ export class LimitTime extends NumericDecorator {
 
     public tick(): Status {
         const currentTime = Date.now();
-        if (currentTime - this._value > this._max) {
+        if (currentTime - this._value > this._max * 1000) {
             return Status.FAILURE;
         }
         return this.children[0]!._execute();

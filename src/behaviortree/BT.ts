@@ -64,6 +64,11 @@ export namespace BT {
         maxChildren: number;
     }
 
+    /** 
+     * 注册节点名 到 节点构造函数的映射
+     */
+    const NODE_NAME_TO_CONSTRUCTOR_MAP = new Map<string, any>();
+
     /**
      * 节点元数据存储
      */
@@ -111,6 +116,7 @@ export namespace BT {
                 parameters
             };
             NODE_METADATA_MAP.set(constructor, fullMetadata);
+            NODE_NAME_TO_CONSTRUCTOR_MAP.set(name, constructor);
             return constructor;
         };
     }
@@ -131,6 +137,7 @@ export namespace BT {
                 parameters
             };
             NODE_METADATA_MAP.set(constructor, fullMetadata);
+            NODE_NAME_TO_CONSTRUCTOR_MAP.set(name, constructor);
             return constructor;
         };
     }
@@ -151,6 +158,7 @@ export namespace BT {
                 parameters
             };
             NODE_METADATA_MAP.set(constructor, fullMetadata);
+            NODE_NAME_TO_CONSTRUCTOR_MAP.set(name, constructor);
             return constructor;
         };
     }
@@ -171,6 +179,7 @@ export namespace BT {
                 parameters
             };
             NODE_METADATA_MAP.set(constructor, fullMetadata);
+            NODE_NAME_TO_CONSTRUCTOR_MAP.set(name, constructor);
             return constructor;
         };
     }
@@ -180,6 +189,20 @@ export namespace BT {
      */
     export function getAllNodeMetadata(): Map<any, NodeMetadata> {
         return new Map(NODE_METADATA_MAP);
+    }
+
+    /**
+     * 通过节点名 获取 节点构造函数
+     */
+    export function getNodeConstructor(name: string): any {
+        return NODE_NAME_TO_CONSTRUCTOR_MAP.get(name);
+    }
+
+    /**
+     * 通过节点构造函数 找到节点元数据
+     */
+    export function getNodeMetadata(ctor: any): NodeMetadata {
+        return NODE_METADATA_MAP.get(ctor)!;
     }
 }
 
