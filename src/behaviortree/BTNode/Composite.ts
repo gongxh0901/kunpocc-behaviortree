@@ -21,7 +21,7 @@ export abstract class Composite extends BTNode {
  * 
  * 遇到 RUNNING 返回 RUNNING 下次从该节点开始
  */
-@BT.CompositeNode("Selector", { name: "选择节点", group: "基础组合节点", desc: "选择节点" })
+@BT.ClassComposite("Selector", { name: "选择节点", group: "基础组合节点", desc: "选择节点" })
 export class Selector extends Composite {
     public override _initialize(global: IBlackboard, branch: IBlackboard): void {
         super._initialize(global, branch);
@@ -57,7 +57,7 @@ export class Selector extends Composite {
  * 
  * 遇到 RUNNING 返回 RUNNING 下次从该节点开始
  */
-@BT.CompositeNode("Sequence", { name: "顺序节点", group: "基础组合节点", desc: "顺序节点" })
+@BT.ClassComposite("Sequence", { name: "顺序节点", group: "基础组合节点", desc: "顺序节点" })
 export class Sequence extends Composite {
     public override _initialize(global: IBlackboard, branch: IBlackboard): void {
         super._initialize(global, branch);
@@ -90,7 +90,7 @@ export class Sequence extends Composite {
  * 并行节点 从上到下执行 全部执行一遍
  * 返回优先级 FAILURE > RUNNING > SUCCESS
  */
-@BT.CompositeNode("Parallel", { name: "并行节点", group: "基础组合节点", desc: "同时执行所有子节点，全部成功才返回成功" })
+@BT.ClassComposite("Parallel", { name: "并行节点", group: "基础组合节点", desc: "同时执行所有子节点，全部成功才返回成功" })
 export class Parallel extends Composite {
     public tick(dt: number): Status {
         let result = Status.SUCCESS;
@@ -112,7 +112,7 @@ export class Parallel extends Composite {
  * 随机选择一个子节点执行
  * 返回子节点状态
  */
-@BT.CompositeNode("RandomSelector", {
+@BT.ClassComposite("RandomSelector", {
     name: "随机选择节点",
     group: "基础组合节点",
     desc: "随机选择一个子节点执行",
@@ -168,7 +168,7 @@ export class RandomSelector extends Composite {
  * 并行节点 从上到下执行 全部执行一遍
  * 返回优先级 SUCCESS > RUNNING > FAILURE
  */
-@BT.CompositeNode("ParallelAnySuccess", {
+@BT.ClassComposite("ParallelAnySuccess", {
     name: "并行任意成功",
     group: "基础组合节点",
     desc: "同时执行所有子节点，任意一个成功即返回成功",

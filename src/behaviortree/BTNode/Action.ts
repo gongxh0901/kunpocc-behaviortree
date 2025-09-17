@@ -17,7 +17,7 @@ export abstract class LeafNode extends BTNode {
  * 次数内，返回RUNNING
  * 超次，返回SUCCESS
  */
-@BT.ActionNode("WaitTicks", {
+@BT.ClassAction("WaitTicks", {
     name: "等待次数",
     group: "基础行为节点",
     desc: "等待指定次数后返回成功",
@@ -50,7 +50,7 @@ export class WaitTicks extends LeafNode {
  * 时间等待节点 时间(秒) 
  * 时间到后返回SUCCESS，否则返回RUNNING
  */
-@BT.ActionNode("WaitTime", {
+@BT.ClassAction("WaitTime", {
     name: "等待时间",
     group: "基础行为节点",
     desc: "等待指定时间(秒)后返回成功",

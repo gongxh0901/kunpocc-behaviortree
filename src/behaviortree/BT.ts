@@ -107,7 +107,7 @@ export namespace BT {
      * @param info.name 节点在编辑器中的中文名
      * @param info.desc 节点描述信息
      */
-    export function ActionNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
+    export function ClassAction(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
             const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {
@@ -128,7 +128,7 @@ export namespace BT {
     /**
      * 条件节点装饰器
      */
-    export function ConditionNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
+    export function ClassCondition(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
             const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {
@@ -149,7 +149,7 @@ export namespace BT {
     /**
      * 组合节点装饰器
      */
-    export function CompositeNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
+    export function ClassComposite(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
             const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {
@@ -170,7 +170,7 @@ export namespace BT {
     /**
      * 装饰节点装饰器
      */
-    export function DecoratorNode(name: string, info?: { group?: string, name?: string, desc?: string }) {
+    export function ClassDecorator(name: string, info?: { group?: string, name?: string, desc?: string }) {
         return function <T extends new (...args: any[]) => any>(constructor: T) {
             const parameters = NODE_PARAMETERS_MAP.get(constructor) || [];
             const fullMetadata: NodeMetadata = {

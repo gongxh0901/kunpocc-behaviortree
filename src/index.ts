@@ -12,4 +12,4 @@ export { Status } from "./behaviortree/header";
 
 // 导出装饰器内容
 import { BT } from "./behaviortree/BT";
-export const { ActionNode, ConditionNode, CompositeNode, DecoratorNode, prop, ParamType } = BT;
+export const { ClassAction, ClassCondition, ClassComposite, ClassDecorator, prop, ParamType } = BT;

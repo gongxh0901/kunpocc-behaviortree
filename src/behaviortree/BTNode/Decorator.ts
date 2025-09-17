@@ -40,7 +40,7 @@ export abstract class ConditionDecorator extends Decorator {
  * 第一个Child Node节点, 返回 FAILURE, 本Node向自己的Parent Node也返回 SUCCESS
  * 第一个Child Node节点, 返回 SUCCESS, 本Node向自己的Parent Node也返回 FAILURE
  */
-@BT.DecoratorNode("Inverter", { name: "反转器", group: "基础装饰节点", desc: "反转子节点的执行结果，成功变失败，失败变成功" })
+@BT.ClassDecorator("Inverter", { name: "反转器", group: "基础装饰节点", desc: "反转子节点的执行结果，成功变失败，失败变成功" })
 export class Inverter extends Decorator {
     public tick(dt: number): Status {
         const status = this.children[0]!._execute(dt);
@@ -61,7 +61,7 @@ export class Inverter extends Decorator {
  * 规定时间内, 根据Child Node的结果, 本节点向自己的父节点也返回相同的结果
  * 超时后, 直接返回 FAILURE
  */
-@BT.DecoratorNode("LimitTime", { name: "时间限制器", group: "基础装饰节点", desc: "限制子节点执行时间，超时返回失败" })
+@BT.ClassDecorator("LimitTime", { name: "时间限制器", group: "基础装饰节点", desc: "限制子节点执行时间，超时返回失败" })
 export class LimitTime extends Decorator {
     @BT.prop({ type: BT.ParamType.float, description: "最大时间(秒)", defaultValue: 1 })
     protected _max: number = 1;
@@ -96,7 +96,7 @@ export class LimitTime extends Decorator {
  * 必须且只能包含一个子节点
  * 次数超过后, 直接返回失败; 次数未超过, 返回子节点状态
  */
-@BT.DecoratorNode("LimitTicks", { name: "次数限制器", group: "基础装饰节点", desc: "限制子节点执行次数，超过次数返回失败" })
+@BT.ClassDecorator("LimitTicks", { name: "次数限制器", group: "基础装饰节点", desc: "限制子节点执行次数，超过次数返回失败" })
 export class LimitTicks extends Decorator {
     @BT.prop({ type: BT.ParamType.int, description: "最大次数", defaultValue: 1 })
     protected _max: number = 1;
@@ -112,12 +112,15 @@ export class LimitTicks extends Decorator {
     }
 
     public tick(dt: number): Status {
-        this._value++;
         if (this._value > this._max) {
             this.cleanupChild();
             return Status.FAILURE;
         }
-        return this.children[0]!._execute(dt);
+        let status = this.children[0]!._execute(dt);
+        if (status !== Status.RUNNING) {
+            this._value++;
+        }
+        return status;
     }
 }
 
@@ -127,7 +130,7 @@ export class LimitTicks extends Decorator {
  * 子节点是成功或失败，累加计数
  * 次数超过之后返回子节点状态，否则返回 RUNNING
  */
-@BT.DecoratorNode("Repeat", { name: "重复节点", group: "基础装饰节点", desc: "重复执行子节点指定次数" })
+@BT.ClassDecorator("Repeat", { name: "重复节点", group: "基础装饰节点", desc: "重复执行子节点指定次数" })
 export class Repeat extends Decorator {
     @BT.prop({ type: BT.ParamType.int, description: "重复次数", defaultValue: 1, min: 1 })
     protected _max: number = 1;
@@ -146,7 +149,7 @@ export class Repeat extends Decorator {
         // 执行子节点
         const status = this.children[0]!._execute(dt);
         // 如果子节点完成（成功或失败），增加计数
-        if (status === Status.SUCCESS || status === Status.FAILURE) {
+        if (status !== Status.RUNNING) {
             this._value++;
             // 检查是否达到最大次数
             if (this._value >= this._max) {
@@ -164,7 +167,7 @@ export class Repeat extends Decorator {
  * 
  * 子节点成功 计数+1
  */
-@BT.DecoratorNode("RepeatUntilFailure", { name: "重复直到失败", group: "基础装饰节点", desc: "重复执行子节点直到失败或达到最大次数" })
+@BT.ClassDecorator("RepeatUntilFailure", { name: "重复直到失败", group: "基础装饰节点", desc: "重复执行子节点直到失败或达到最大次数" })
 export class RepeatUntilFailure extends Decorator {
     @BT.prop({ type: BT.ParamType.int, description: "最大重试次数", defaultValue: 1, min: 1 })
     protected _max: number = 1;
@@ -202,7 +205,7 @@ export class RepeatUntilFailure extends Decorator {
  * 
  * 子节点失败, 计数+1
  */
-@BT.DecoratorNode("RepeatUntilSuccess", { name: "重复直到成功", group: "基础装饰节点", desc: "重复执行子节点直到成功或达到最大次数" })
+@BT.ClassDecorator("RepeatUntilSuccess", { name: "重复直到成功", group: "基础装饰节点", desc: "重复执行子节点直到成功或达到最大次数" })
 export class RepeatUntilSuccess extends Decorator {
     @BT.prop({ type: BT.ParamType.int, description: "最大重试次数", defaultValue: 1, step: 1 })
     protected _max: number = 1;
@@ -237,7 +240,7 @@ export class RepeatUntilSuccess extends Decorator {
 /**
  * 权重装饰节点
  */
-@BT.DecoratorNode("WeightDecorator", { name: "权重装饰器", group: "基础装饰节点", desc: "权重装饰节点" })
+@BT.ClassDecorator("WeightDecorator", { name: "权重装饰器", group: "基础装饰节点", desc: "权重装饰节点" })
 export class WeightDecorator extends Decorator {
     @BT.prop({ type: BT.ParamType.int, description: "权重", defaultValue: 1, step: 1 })
     private _weight: number;
