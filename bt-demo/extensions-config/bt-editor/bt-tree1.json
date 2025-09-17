@@ -1,0 +1,102 @@
+{
+    "name": "bt-tree1",
+    "description": "",
+    "nodes": [
+        {
+            "id": "1759472794685_3awlwerqg",
+            "className": "MemSelector",
+            "name": "记忆选择节点",
+            "position": {
+                "x": -60,
+                "y": -200
+            },
+            "parameters": {},
+            "children": [
+                "1759472800995_k3q8rx02h",
+                "1759472799864_nait7thja",
+                "1759472798713_ay9jxznr4",
+                "1759472797759_gu3y8p1um"
+            ]
+        },
+        {
+            "id": "1759472797759_gu3y8p1um",
+            "className": "Inverter",
+            "name": "反转器",
+            "position": {
+                "x": 160,
+                "y": -80
+            },
+            "parameters": {},
+            "children": []
+        },
+        {
+            "id": "1759472798713_ay9jxznr4",
+            "className": "LimitTime",
+            "name": "时间限制器",
+            "position": {
+                "x": 20,
+                "y": -80
+            },
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        },
+        {
+            "id": "1759472799864_nait7thja",
+            "className": "LimitTicks",
+            "name": "次数限制器",
+            "position": {
+                "x": -120,
+                "y": -80
+            },
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        },
+        {
+            "id": "1759472800995_k3q8rx02h",
+            "className": "Repeat",
+            "name": "重复节点",
+            "position": {
+                "x": -260,
+                "y": -80
+            },
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        }
+    ],
+    "connections": [
+        {
+            "id": "conn_1759472802506_ojduz0zog",
+            "sourceNodeId": "1759472794685_3awlwerqg",
+            "targetNodeId": "1759472800995_k3q8rx02h",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759472803849_dk7zwd0xt",
+            "sourceNodeId": "1759472794685_3awlwerqg",
+            "targetNodeId": "1759472799864_nait7thja",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759472807533_unxo9p2b0",
+            "sourceNodeId": "1759472794685_3awlwerqg",
+            "targetNodeId": "1759472798713_ay9jxznr4",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759472809481_l9rcrno3b",
+            "sourceNodeId": "1759472794685_3awlwerqg",
+            "targetNodeId": "1759472797759_gu3y8p1um",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        }
+    ]
+}

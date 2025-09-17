@@ -1,0 +1,169 @@
+{
+    "bt-tree1": [
+        {
+            "id": "1759472794685_3awlwerqg",
+            "className": "MemSelector",
+            "parameters": {},
+            "children": [
+                "1759472800995_k3q8rx02h",
+                "1759472799864_nait7thja",
+                "1759472798713_ay9jxznr4",
+                "1759472797759_gu3y8p1um"
+            ]
+        },
+        {
+            "id": "1759472797759_gu3y8p1um",
+            "className": "Inverter",
+            "parameters": {},
+            "children": []
+        },
+        {
+            "id": "1759472798713_ay9jxznr4",
+            "className": "LimitTime",
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        },
+        {
+            "id": "1759472799864_nait7thja",
+            "className": "LimitTicks",
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        },
+        {
+            "id": "1759472800995_k3q8rx02h",
+            "className": "Repeat",
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        }
+    ],
+    "bt-tree2": [
+        {
+            "id": "1757930589538_qisfksbwz",
+            "className": "MemSequence",
+            "parameters": {},
+            "children": [
+                "1758005578560_0b1kuefo0",
+                "node_1757926547913_xilg11ei7",
+                "1757931183149_eeuq44vs0"
+            ]
+        },
+        {
+            "id": "node_1757926547913_xilg11ei7",
+            "className": "MemSelector",
+            "parameters": {},
+            "children": [
+                "node_1757926550855_1hqcmi43w",
+                "node_1757926555912_18vbde5fp",
+                "1757930584200_cf9rez1qg",
+                "1757931171553_a3afal936"
+            ]
+        },
+        {
+            "id": "node_1757926550855_1hqcmi43w",
+            "className": "WaitTicks",
+            "parameters": {
+                "_max": 2
+            },
+            "children": []
+        },
+        {
+            "id": "node_1757926555912_18vbde5fp",
+            "className": "WaitTime",
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        },
+        {
+            "id": "1757930584200_cf9rez1qg",
+            "className": "Inverter",
+            "parameters": {},
+            "children": [
+                "1757930606484_dbsf9bsu2"
+            ]
+        },
+        {
+            "id": "1757930606484_dbsf9bsu2",
+            "className": "WaitTicks",
+            "parameters": {
+                "_max": 0
+            },
+            "children": []
+        },
+        {
+            "id": "1757931171553_a3afal936",
+            "className": "WaitTicks",
+            "parameters": {
+                "_max": 0
+            },
+            "children": []
+        },
+        {
+            "id": "1757931183149_eeuq44vs0",
+            "className": "LimitTicks",
+            "parameters": {
+                "_max": 1
+            },
+            "children": []
+        },
+        {
+            "id": "1758005570308_u6yo43u3b",
+            "className": "MemSelector",
+            "parameters": {},
+            "children": [
+                "1758005574101_v4xhs2jo8"
+            ]
+        },
+        {
+            "id": "1758005572265_dl9lxnrki",
+            "className": "MemSequence",
+            "parameters": {},
+            "children": [
+                "1758005575213_obgfw5q7p"
+            ]
+        },
+        {
+            "id": "1758005574101_v4xhs2jo8",
+            "className": "Selector",
+            "parameters": {},
+            "children": [
+                "1758005576340_c8xf5bdhp"
+            ]
+        },
+        {
+            "id": "1758005575213_obgfw5q7p",
+            "className": "RandomSelector",
+            "parameters": {},
+            "children": [
+                "1758005577367_tw24xyxop"
+            ]
+        },
+        {
+            "id": "1758005576340_c8xf5bdhp",
+            "className": "Sequence",
+            "parameters": {},
+            "children": []
+        },
+        {
+            "id": "1758005577367_tw24xyxop",
+            "className": "Parallel",
+            "parameters": {},
+            "children": []
+        },
+        {
+            "id": "1758005578560_0b1kuefo0",
+            "className": "ParallelAnySuccess",
+            "parameters": {},
+            "children": [
+                "1758005570308_u6yo43u3b",
+                "1758005572265_dl9lxnrki"
+            ]
+        }
+    ]
+}
