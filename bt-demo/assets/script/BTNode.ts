@@ -7,7 +7,7 @@
 import { sp } from "cc";
 import { BT } from "./Header";
 
-@BT.ActionNode("BTAnimation", { name: "播放动画", group: "动画", desc: "通过动画名播放动画，播放完成后返回成功" })
+@BT.ClassAction("BTAnimation", { name: "播放动画", group: "动画", desc: "通过动画名播放动画，播放完成后返回成功" })
 export class BTAnimation extends BT.LeafNode {
     @BT.prop({ type: BT.ParamType.string, description: "动画名" })
     private _name: string = "";
@@ -47,7 +47,7 @@ export class BTAnimation extends BT.LeafNode {
 }
 
 /** 条件节点 */
-@BT.ConditionNode("BTConditionRandom", { name: "随机条件节点", group: "基础条件节点", desc: "随机0-1的值，大于设置值返回成功，否则返回失败" })
+@BT.ClassCondition("BTConditionRandom", { name: "随机条件节点", group: "基础条件节点", desc: "随机0-1的值，大于设置值返回成功，否则返回失败" })
 export class BTConditionRandom extends BT.Condition {
 
     @BT.prop({ type: BT.ParamType.float, description: "值", defaultValue: 0.5 })
@@ -60,7 +60,7 @@ export class BTConditionRandom extends BT.Condition {
 
 
 /** 条件装饰节点 */
-@BT.DecoratorNode("BTCondition", { name: "条件装饰节点", group: "基础装饰节点", desc: "随机0-1的值，大于设置值返回成功，否则返回失败" })
+@BT.ClassDecorator("BTCondition", { name: "条件装饰节点", group: "基础装饰节点", desc: "随机0-1的值，大于设置值返回成功，否则返回失败" })
 export class BTCondition extends BT.ConditionDecorator {
 
     @BT.prop({ type: BT.ParamType.float, description: "值" })
