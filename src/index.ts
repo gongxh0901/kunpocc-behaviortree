@@ -7,9 +7,11 @@ export * from "./behaviortree/BTNode/AbstractNodes";
 export * from "./behaviortree/BTNode/Action";
 export { IBTNode } from "./behaviortree/BTNode/BTNode";
 export * from "./behaviortree/BTNode/Composite";
+export * from "./behaviortree/BTNode/Condition";
 export * from "./behaviortree/BTNode/Decorator";
 export { createBehaviorTree } from "./behaviortree/Factory";
+export { Status } from "./behaviortree/header";
 
 // 导出装饰器内容
 import { BT } from "./behaviortree/BT";
-export const { ActionNode, ConditionNode, CompositeNode, DecoratorNode, prop } = BT;
+export const { ActionNode, ConditionNode, CompositeNode, DecoratorNode, prop, ParamType } = BT;

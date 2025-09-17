@@ -9,7 +9,7 @@ import { LeafNode } from "./AbstractNodes";
  */
 @BT.ActionNode("WaitTicks", {
     name: "等待次数",
-    group: "等待行为",
+    group: "基础行为节点",
     desc: "等待指定次数后返回成功",
 })
 export class WaitTicks extends LeafNode {
@@ -42,7 +42,7 @@ export class WaitTicks extends LeafNode {
  */
 @BT.ActionNode("WaitTime", {
     name: "等待时间",
-    group: "等待行为",
+    group: "基础行为节点",
     desc: "等待指定时间(秒)后返回成功",
 })
 export class WaitTime extends LeafNode {
