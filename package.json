@@ -1,6 +1,6 @@
 {
     "name": "kunpocc-behaviortree",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "行为树",
     "main": "./dist/kunpocc-behaviortree.cjs",
     "module": "./dist/kunpocc-behaviortree.mjs",

@@ -11,7 +11,9 @@ export namespace BT {
         int = "number",
         float = "float",
         string = "string",
-        bool = "boolean"
+        bool = "boolean",
+        object = "object",
+        array = "array"
     }
 
     /**
@@ -46,6 +48,12 @@ export namespace BT {
         min?: number,
         /** 最大值 */
         max?: number,
+        /** 对象属性定义 - 仅当type为object时使用 */
+        properties?: { [key: string]: Omit<ParameterInfo, "name"> };
+        /** 数组元素类型 - 仅当type为array时使用 */
+        itemType?: ParamType;
+        /** 数组元素对象定义 - 仅当type为array且itemType为object时使用 */
+        itemProperties?: { [key: string]: Omit<ParameterInfo, "name"> };
     }
 
     /**

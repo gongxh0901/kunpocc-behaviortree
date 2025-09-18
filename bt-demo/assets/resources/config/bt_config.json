@@ -1,138 +1,8 @@
 {
-    "bt-tree1": [
-        {
-            "id": "1759488688188_qejfcso50",
-            "className": "Selector",
-            "parameters": {},
-            "children": [
-                "1759488707759_2bmdm1fqt",
-                "1759488725107_v8u160t95",
-                "1759488737637_axpz9aqaz",
-                "1759482034741_cf3mqaqdj"
-            ]
-        },
-        {
-            "id": "1759479318405_bptb8ltcp",
-            "className": "LimitTime",
-            "parameters": {
-                "_max": 2
-            },
-            "children": [
-                "1758089736854_t55n54hkh"
-            ]
-        },
-        {
-            "id": "1759479295671_jflit2ek8",
-            "className": "LimitTime",
-            "parameters": {
-                "_max": 2
-            },
-            "children": [
-                "1758089659917_vjumiu9hy"
-            ]
-        },
-        {
-            "id": "1758089659917_vjumiu9hy",
-            "className": "BTAnimation",
-            "parameters": {
-                "_name": "walk",
-                "_loop": true
-            },
-            "children": []
-        },
-        {
-            "id": "1758089736854_t55n54hkh",
-            "className": "BTAnimation",
-            "parameters": {
-                "_name": "run",
-                "_loop": true
-            },
-            "children": []
-        },
-        {
-            "id": "1758089757615_dp9tw9ka1",
-            "className": "BTAnimation",
-            "parameters": {
-                "_name": "jump",
-                "_loop": false
-            },
-            "children": []
-        },
-        {
-            "id": "1759478407706_w30m4btux",
-            "className": "BTAnimation",
-            "parameters": {
-                "_name": "idle",
-                "_loop": true
-            },
-            "children": []
-        },
-        {
-            "id": "1759481172259_xou25wj2n",
-            "className": "BTConditionRandom",
-            "parameters": {
-                "_value": 0.3
-            },
-            "children": []
-        },
-        {
-            "id": "1759481282875_5orqavi5y",
-            "className": "BTConditionRandom",
-            "parameters": {
-                "_value": 0.4
-            },
-            "children": []
-        },
-        {
-            "id": "1759481307863_ja6q4q9bz",
-            "className": "BTConditionRandom",
-            "parameters": {
-                "_value": 0.3
-            },
-            "children": []
-        },
-        {
-            "id": "1759482034741_cf3mqaqdj",
-            "className": "LimitTime",
-            "parameters": {
-                "_max": 3
-            },
-            "children": [
-                "1759478407706_w30m4btux"
-            ]
-        },
-        {
-            "id": "1759488707759_2bmdm1fqt",
-            "className": "Sequence",
-            "parameters": {},
-            "children": [
-                "1759481172259_xou25wj2n",
-                "1759479295671_jflit2ek8"
-            ]
-        },
-        {
-            "id": "1759488725107_v8u160t95",
-            "className": "Sequence",
-            "parameters": {},
-            "children": [
-                "1759481282875_5orqavi5y",
-                "1759479318405_bptb8ltcp"
-            ]
-        },
-        {
-            "id": "1759488737637_axpz9aqaz",
-            "className": "Sequence",
-            "parameters": {},
-            "children": [
-                "1759481307863_ja6q4q9bz",
-                "1758089757615_dp9tw9ka1"
-            ]
-        }
-    ],
     "bt-tree2": [
         {
-            "id": "1757930589538_qisfksbwz",
-            "className": "MemSequence",
+            "id": "1758206972710_bhxebhy7o",
+            "className": "Sequence",
             "parameters": {},
             "children": [
                 "1758090634327_mf36nwkdt"
@@ -142,6 +12,17 @@
             "id": "1758090634327_mf36nwkdt",
             "className": "Selector",
             "parameters": {},
+            "children": [
+                "1758206988178_55b7kk5va"
+            ]
+        },
+        {
+            "id": "1758206988178_55b7kk5va",
+            "className": "BTAnimation",
+            "parameters": {
+                "_name": "",
+                "_loop": false
+            },
             "children": []
         }
     ]

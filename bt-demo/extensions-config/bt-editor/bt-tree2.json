@@ -3,12 +3,12 @@
     "description": "",
     "nodes": [
         {
-            "id": "1757930589538_qisfksbwz",
-            "className": "MemSequence",
-            "name": "记忆顺序节点",
+            "id": "1758206972710_bhxebhy7o",
+            "className": "Sequence",
+            "name": "顺序节点",
             "position": {
-                "x": -60,
-                "y": -280
+                "x": 80,
+                "y": -320
             },
             "parameters": {},
             "children": [
@@ -20,25 +20,49 @@
             "className": "Selector",
             "name": "选择节点",
             "position": {
-                "x": 20,
-                "y": -80
+                "x": -80,
+                "y": -220
             },
             "parameters": {},
+            "children": [
+                "1758206988178_55b7kk5va"
+            ],
+            "alias": "是的发放是的发放"
+        },
+        {
+            "id": "1758206988178_55b7kk5va",
+            "className": "BTAnimation",
+            "name": "播放动画",
+            "position": {
+                "x": -20,
+                "y": -40
+            },
+            "parameters": {
+                "_name": "",
+                "_loop": false
+            },
             "children": []
         }
     ],
     "connections": [
         {
-            "id": "conn_1758090635620_zajj5r8g0",
-            "sourceNodeId": "1757930589538_qisfksbwz",
+            "id": "conn_1758206976733_208tneycs",
+            "sourceNodeId": "1758206972710_bhxebhy7o",
             "targetNodeId": "1758090634327_mf36nwkdt",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1758206989897_46hw88z7h",
+            "sourceNodeId": "1758090634327_mf36nwkdt",
+            "targetNodeId": "1758206988178_55b7kk5va",
             "sourcePointType": "child",
             "targetPointType": "parent"
         }
     ],
     "canvasScale": 1.139190980775211,
     "canvasOffset": {
-        "x": 266.1539154489914,
-        "y": 608.1811503312816
+        "x": 549.4323607689915,
+        "y": 698.6185343759718
     }
 }

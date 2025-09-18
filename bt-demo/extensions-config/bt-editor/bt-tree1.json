@@ -1,6 +1,6 @@
 {
-    "name": "bt-tree1",
-    "description": "",
+    "name": "bt-tree2",
+    "description": "这是一个描述",
     "nodes": [
         {
             "id": "1759488688188_qejfcso50",
@@ -8,23 +8,46 @@
             "name": "选择节点",
             "position": {
                 "x": -60,
-                "y": -240
+                "y": -200
             },
             "parameters": {},
             "children": [
                 "1759488707759_2bmdm1fqt",
                 "1759488725107_v8u160t95",
                 "1759488737637_axpz9aqaz",
-                "1759482034741_cf3mqaqdj"
+                "1759482034741_cf3mqaqdj",
+                "1758190139303_t5o7vv3ak"
             ],
             "alias": "根选择节点"
+        },
+        {
+            "id": "1758190139303_t5o7vv3ak",
+            "className": "BTTestNode",
+            "name": "嵌套数据测试节点",
+            "position": {
+                "x": 440,
+                "y": -80
+            },
+            "parameters": {
+                "position": {
+                    "x": 10,
+                    "y": 20
+                },
+                "configs": [
+                    {
+                        "name": "hahaa",
+                        "value": 1
+                    }
+                ]
+            },
+            "children": []
         },
         {
             "id": "1759479318405_bptb8ltcp",
             "className": "LimitTime",
             "name": "时间限制器",
             "position": {
-                "x": -60,
+                "x": -120,
                 "y": 40
             },
             "parameters": {
@@ -39,7 +62,7 @@
             "className": "LimitTime",
             "name": "时间限制器",
             "position": {
-                "x": -340,
+                "x": -400,
                 "y": 40
             },
             "parameters": {
@@ -54,7 +77,7 @@
             "className": "BTAnimation",
             "name": "播放动画",
             "position": {
-                "x": -340,
+                "x": -400,
                 "y": 160
             },
             "parameters": {
@@ -68,8 +91,8 @@
             "className": "BTAnimation",
             "name": "播放动画",
             "position": {
-                "x": -60,
-                "y": 200
+                "x": -120,
+                "y": 160
             },
             "parameters": {
                 "_name": "run",
@@ -82,8 +105,8 @@
             "className": "BTAnimation",
             "name": "播放动画",
             "position": {
-                "x": 220,
-                "y": 60
+                "x": 160,
+                "y": 40
             },
             "parameters": {
                 "_name": "jump",
@@ -96,7 +119,7 @@
             "className": "BTAnimation",
             "name": "播放动画",
             "position": {
-                "x": 360,
+                "x": 300,
                 "y": 40
             },
             "parameters": {
@@ -110,7 +133,7 @@
             "className": "BTConditionRandom",
             "name": "随机条件节点",
             "position": {
-                "x": -480,
+                "x": -540,
                 "y": 40
             },
             "parameters": {
@@ -123,7 +146,7 @@
             "className": "BTConditionRandom",
             "name": "随机条件节点",
             "position": {
-                "x": -200,
+                "x": -260,
                 "y": 40
             },
             "parameters": {
@@ -136,7 +159,7 @@
             "className": "BTConditionRandom",
             "name": "随机条件节点",
             "position": {
-                "x": 80,
+                "x": 20,
                 "y": 40
             },
             "parameters": {
@@ -149,11 +172,11 @@
             "className": "LimitTime",
             "name": "时间限制器",
             "position": {
-                "x": 360,
+                "x": 300,
                 "y": -80
             },
             "parameters": {
-                "_max": 3
+                "_max": 2
             },
             "children": [
                 "1759478407706_w30m4btux"
@@ -165,7 +188,7 @@
             "className": "Sequence",
             "name": "顺序节点",
             "position": {
-                "x": -400,
+                "x": -480,
                 "y": -80
             },
             "parameters": {},
@@ -180,7 +203,7 @@
             "className": "Sequence",
             "name": "顺序节点",
             "position": {
-                "x": -120,
+                "x": -200,
                 "y": -80
             },
             "parameters": {},
@@ -188,14 +211,14 @@
                 "1759481282875_5orqavi5y",
                 "1759479318405_bptb8ltcp"
             ],
-            "alias": "奔跑动画分支"
+            "alias": "奔跑动画"
         },
         {
             "id": "1759488737637_axpz9aqaz",
             "className": "Sequence",
             "name": "顺序节点",
             "position": {
-                "x": 160,
+                "x": 80,
                 "y": -80
             },
             "parameters": {},
@@ -297,11 +320,18 @@
             "targetNodeId": "1758089757615_dp9tw9ka1",
             "sourcePointType": "child",
             "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1758204108181_90iaioyvg",
+            "sourceNodeId": "1759488688188_qejfcso50",
+            "targetNodeId": "1758190139303_t5o7vv3ak",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
         }
     ],
-    "canvasScale": 1.0252718826976899,
+    "canvasScale": 1.0006385665653545,
     "canvasOffset": {
-        "x": 540.227707847,
-        "y": 428.7616100108487
+        "x": 584.9936143343465,
+        "y": 498.99074078480237
     }
 }
