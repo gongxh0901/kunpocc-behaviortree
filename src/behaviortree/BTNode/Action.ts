@@ -17,11 +17,7 @@ export abstract class LeafNode extends BTNode {
  * 次数内，返回RUNNING
  * 超次，返回SUCCESS
  */
-@BT.ClassAction("WaitTicks", {
-    name: "等待次数",
-    group: "基础行为节点",
-    desc: "等待指定次数后返回成功",
-})
+@BT.ClassAction("WaitTicks", { name: "次数等待节点", group: "基础行为节点", desc: "指定次数后返回成功, 否则返回执行中" })
 export class WaitTicks extends LeafNode {
     @BT.prop({ type: BT.ParamType.int, description: "最大等待次数", defaultValue: 0, step: 1 })
     private _max: number;
@@ -50,11 +46,7 @@ export class WaitTicks extends LeafNode {
  * 时间等待节点 时间(秒) 
  * 时间到后返回SUCCESS，否则返回RUNNING
  */
-@BT.ClassAction("WaitTime", {
-    name: "等待时间",
-    group: "基础行为节点",
-    desc: "等待指定时间(秒)后返回成功",
-})
+@BT.ClassAction("WaitTime", { name: "时间等待节点", group: "基础行为节点", desc: "等待指定时间(秒)后返回成功, 否则返回执行中" })
 export class WaitTime extends LeafNode {
     @BT.prop({ type: BT.ParamType.float, description: "等待时间(秒)", defaultValue: 0, step: 0.01 })
     private _max: number;
