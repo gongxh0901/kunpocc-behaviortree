@@ -15,8 +15,8 @@ export interface IBTNode {
     /**
      * @internal
      */
-    _execute(): Status;
-    tick(): Status;
+    _execute(dt: number): Status;
+    tick(dt: number): Status;
 
     /**
      * 优先写入自己的黑板数据, 如果没有则写入父节点的黑板数据
@@ -67,7 +67,7 @@ export abstract class BTNode implements IBTNode {
     /**
      * @internal
      */
-    public _execute(): Status {
+    public _execute(dt: number): Status {
         // 首次执行时初始化
         const isRunning = this._local.openNodes.get(this) || false;
         if (!isRunning) {
@@ -76,7 +76,7 @@ export abstract class BTNode implements IBTNode {
         }
 
         // 执行核心逻辑
-        const status = this.tick();
+        const status = this.tick(dt);
 
         // 执行完成时清理
         if (status !== Status.RUNNING) {
@@ -98,7 +98,7 @@ export abstract class BTNode implements IBTNode {
      * 子类必须实现此方法
      * @returns 执行状态
      */
-    public abstract tick(): Status;
+    public abstract tick(dt: number): Status;
 
     /**
      * 清理节点（执行完成时调用）

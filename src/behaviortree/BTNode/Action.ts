@@ -1,6 +1,16 @@
 import { BT } from "../BT";
 import { Status } from "../header";
-import { LeafNode } from "./AbstractNodes";
+import { BTNode } from "./BTNode";
+
+/**
+ * 叶子节点 基类
+ * 没有子节点
+ */
+export abstract class LeafNode extends BTNode {
+    constructor() {
+        super([]);
+    }
+}
 
 /**
  * 次数等待节点(无子节点)
@@ -56,12 +66,12 @@ export class WaitTime extends LeafNode {
 
     protected override open(): void {
         super.open();
-        this._value = new Date().getTime();
+        this._value = 0;
     }
 
-    public tick(): Status {
-        const currTime = new Date().getTime();
-        if (currTime - this._value >= this._max * 1000) {
+    public tick(dt: number): Status {
+        this._value += dt;
+        if (this._value >= this._max) {
             return Status.SUCCESS;
         }
         return Status.RUNNING;

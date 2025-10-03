@@ -8,7 +8,7 @@ import { BehaviorTree } from "./BehaviorTree";
 import { BT } from "./BT";
 import { IBTNode } from "./BTNode/BTNode";
 
-interface INodeConfig {
+export interface INodeConfig {
     id: string,
     className: string,
     parameters: Record<string, any>,

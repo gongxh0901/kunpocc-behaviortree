@@ -34,8 +34,8 @@ export class BehaviorTree<T> {
     /**
      * 执行行为树
      */
-    public tick(): Status {
-        return this._root._execute();
+    public tick(dt: number): Status {
+        return this._root._execute(dt);
     }
 
     /**

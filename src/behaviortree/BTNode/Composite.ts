@@ -1,8 +1,18 @@
+import { IBlackboard } from "../Blackboard";
 import { BT } from "../BT";
 import { Status } from "../header";
-import { Composite, MemoryComposite } from "./AbstractNodes";
-import { IBTNode } from "./BTNode";
+import { BTNode, IBTNode } from "./BTNode";
 import { WeightDecorator } from "./Decorator";
+
+/**
+ * 组合节点基类
+ * 有多个子节点
+ */
+export abstract class Composite extends BTNode {
+    constructor(...children: IBTNode[]) {
+        super(children);
+    }
+}
 
 /**
  * 记忆选择节点 从上到下执行
@@ -11,23 +21,29 @@ import { WeightDecorator } from "./Decorator";
  * 
  * 遇到 RUNNING 返回 RUNNING 下次从该节点开始
  */
-@BT.CompositeNode("MemSelector", {
-    name: "记忆选择节点",
-    group: "基础组合节点",
-    desc: "记住上次运行位置的选择节点，从记忆位置开始执行",
-})
-export class MemSelector extends MemoryComposite {
-    public tick(): Status {
-        let index = this.get<number>(`__nMemoryRunningIndex`);
+@BT.CompositeNode("Selector", { name: "选择节点", group: "基础组合节点", desc: "选择节点" })
+export class Selector extends Composite {
+    public override _initialize(global: IBlackboard, branch: IBlackboard): void {
+        super._initialize(global, branch);
+        this._local = branch.createChild();
+    }
+
+    protected override open(): void {
+        super.open();
+        this.set(`__nRunningIndex`, 0);
+    }
+
+    public tick(dt: number): Status {
+        let index = this.get<number>(`__nRunningIndex`);
         for (let i = index; i < this.children.length; i++) {
-            let status = this.children[i]!._execute();
+            let status = this.children[i]!._execute(dt);
             if (status === Status.FAILURE) {
                 continue;
             }
             if (status === Status.SUCCESS) {
                 return status;
             }
-            this.set(`__nMemoryRunningIndex`, i);
+            this.set(`__nRunningIndex`, i);
             return Status.RUNNING;
         }
         return Status.FAILURE;
@@ -35,29 +51,35 @@ export class MemSelector extends MemoryComposite {
 }
 
 /**
- * 记忆顺序节点 从上到下执行
+ * 顺序节点 从上到下执行
  * 遇到 SUCCESS 继续下一个
  * 遇到 FAILURE 停止迭代 返回 FAILURE 下次重新开始
  * 
  * 遇到 RUNNING 返回 RUNNING 下次从该节点开始
  */
-@BT.CompositeNode("MemSequence", {
-    name: "记忆顺序节点",
-    group: "基础组合节点",
-    desc: "记住上次运行位置的序列节点，从记忆位置开始执行",
-})
-export class MemSequence extends MemoryComposite {
-    public tick(): Status {
-        let index = this.get<number>(`__nMemoryRunningIndex`);
+@BT.CompositeNode("Sequence", { name: "顺序节点", group: "基础组合节点", desc: "顺序节点" })
+export class Sequence extends Composite {
+    public override _initialize(global: IBlackboard, branch: IBlackboard): void {
+        super._initialize(global, branch);
+        this._local = branch.createChild();
+    }
+
+    protected override open(): void {
+        super.open();
+        this.set(`__nRunningIndex`, 0);
+    }
+
+    public tick(dt: number): Status {
+        let index = this.get<number>(`__nRunningIndex`);
         for (let i = index; i < this.children.length; i++) {
-            let status = this.children[i]!._execute();
+            let status = this.children[i]!._execute(dt);
             if (status === Status.SUCCESS) {
                 continue;
             }
             if (status === Status.FAILURE) {
                 return Status.FAILURE;
             }
-            this.set(`__nMemoryRunningIndex`, i);
+            this.set(`__nRunningIndex`, i);
             return Status.RUNNING;
         }
         return Status.SUCCESS;
@@ -65,24 +87,22 @@ export class MemSequence extends MemoryComposite {
 }
 
 /**
- * 选择节点 从上到下执行
- * 返回第一个不为 FAILURE 的子节点状态
- * 否则返回 FAILURE
+ * 并行节点 从上到下执行 全部执行一遍
+ * 返回优先级 FAILURE > RUNNING > SUCCESS
  */
-@BT.CompositeNode("Selector", {
-    name: "选择节点",
-    group: "基础组合节点",
-    desc: "依次执行子节点，直到找到成功或运行中的节点",
-})
-export class Selector extends Composite {
-    public tick(): Status {
+@BT.CompositeNode("Parallel", { name: "并行节点", group: "基础组合节点", desc: "同时执行所有子节点，全部成功才返回成功" })
+export class Parallel extends Composite {
+    public tick(dt: number): Status {
+        let result = Status.SUCCESS;
         for (let i = 0; i < this.children.length; i++) {
-            let status = this.children[i]!._execute();
-            if (status !== Status.FAILURE) {
-                return status;
+            let status = this.children[i]!._execute(dt);
+            if (result === Status.FAILURE || status === Status.FAILURE) {
+                result = Status.FAILURE;
+            } else if (status === Status.RUNNING) {
+                result = Status.RUNNING;
             }
         }
-        return Status.FAILURE;
+        return result;
     }
 }
 
@@ -117,7 +137,7 @@ export class RandomSelector extends Composite {
         return (child instanceof WeightDecorator) ? (child.weight) : 1;
     }
 
-    public tick(): Status {
+    public tick(dt: number): Status {
         if (this.children.length === 0) {
             return Status.FAILURE;
         }
@@ -139,55 +159,8 @@ export class RandomSelector extends Composite {
                 left = mid + 1;
             }
         }
-        const status = this.children[childIndex]!._execute();
+        const status = this.children[childIndex]!._execute(dt);
         return status;
-    }
-}
-
-/**
- * 顺序节点 从上到下执行
- * 遇到 SUCCESS 继续下一个
- * 否则返回子节点状态
- */
-@BT.CompositeNode("Sequence", {
-    name: "顺序节点",
-    group: "基础组合节点",
-    desc: "依次执行所有子节点，全部成功才返回成功",
-})
-export class Sequence extends Composite {
-    public tick(): Status {
-        for (let i = 0; i < this.children.length; i++) {
-            let status = this.children[i]!._execute();
-            if (status === Status.SUCCESS) {
-                continue;
-            }
-            return status;
-        }
-        return Status.SUCCESS;
-    }
-}
-
-/**
- * 并行节点 从上到下执行 全部执行一遍
- * 返回优先级 FAILURE > RUNNING > SUCCESS
- */
-@BT.CompositeNode("Parallel", {
-    name: "并行节点",
-    group: "基础组合节点",
-    desc: "同时执行所有子节点，全部成功才返回成功",
-})
-export class Parallel extends Composite {
-    public tick(): Status {
-        let result = Status.SUCCESS;
-        for (let i = 0; i < this.children.length; i++) {
-            let status = this.children[i]!._execute();
-            if (result === Status.FAILURE || status === Status.FAILURE) {
-                result = Status.FAILURE;
-            } else if (status === Status.RUNNING) {
-                result = Status.RUNNING;
-            }
-        }
-        return result;
     }
 }
 
@@ -201,10 +174,10 @@ export class Parallel extends Composite {
     desc: "同时执行所有子节点，任意一个成功即返回成功",
 })
 export class ParallelAnySuccess extends Composite {
-    public tick(): Status {
+    public tick(dt: number): Status {
         let result = Status.FAILURE;
         for (let i = 0; i < this.children.length; i++) {
-            let status = this.children[i]!._execute();
+            let status = this.children[i]!._execute(dt);
             if (result === Status.SUCCESS || status === Status.SUCCESS) {
                 result = Status.SUCCESS;
             } else if (status === Status.RUNNING) {
