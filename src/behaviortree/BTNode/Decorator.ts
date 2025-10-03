@@ -27,7 +27,10 @@ export abstract class ConditionDecorator extends Decorator {
     protected abstract isEligible(): boolean;
 
     public tick(dt: number): Status {
-        return this.isEligible() ? this.children[0]!._execute(dt) : Status.FAILURE;
+        if (this.isEligible()) {
+            return this.children[0]!._execute(dt);
+        }
+        return Status.FAILURE;
     }
 }
 
@@ -81,6 +84,7 @@ export class LimitTime extends Decorator {
     public tick(dt: number): Status {
         this._value += dt;
         if (this._value > this._max) {
+            this.cleanupChild();
             return Status.FAILURE;
         }
         return this.children[0]!._execute(dt);
@@ -110,6 +114,7 @@ export class LimitTicks extends Decorator {
     public tick(dt: number): Status {
         this._value++;
         if (this._value > this._max) {
+            this.cleanupChild();
             return Status.FAILURE;
         }
         return this.children[0]!._execute(dt);
@@ -124,7 +129,7 @@ export class LimitTicks extends Decorator {
  */
 @BT.DecoratorNode("Repeat", { name: "重复节点", group: "基础装饰节点", desc: "重复执行子节点指定次数" })
 export class Repeat extends Decorator {
-    @BT.prop({ type: BT.ParamType.int, description: "重复次数", defaultValue: 1 })
+    @BT.prop({ type: BT.ParamType.int, description: "重复次数", defaultValue: 1, min: 1 })
     protected _max: number = 1;
 
     private _value: number = 0;
@@ -161,7 +166,7 @@ export class Repeat extends Decorator {
  */
 @BT.DecoratorNode("RepeatUntilFailure", { name: "重复直到失败", group: "基础装饰节点", desc: "重复执行子节点直到失败或达到最大次数" })
 export class RepeatUntilFailure extends Decorator {
-    @BT.prop({ type: BT.ParamType.int, description: "最大重试次数", defaultValue: 1 })
+    @BT.prop({ type: BT.ParamType.int, description: "最大重试次数", defaultValue: 1, min: 1 })
     protected _max: number = 1;
 
     private _value: number = 0;

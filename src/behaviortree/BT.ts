@@ -42,6 +42,10 @@ export namespace BT {
         defaultValue?: any;
         /** 步进 针对数字类型的变更的最小单位 */
         step?: number,
+        /** 最小值 */
+        min?: number,
+        /** 最大值 */
+        max?: number,
     }
 
     /**

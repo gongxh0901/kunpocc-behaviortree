@@ -81,9 +81,7 @@ export abstract class BTNode implements IBTNode {
         // 执行完成时清理
         if (status !== Status.RUNNING) {
             this._local.openNodes.delete(this);
-            this.close();
         }
-
         return status;
     }
 
@@ -94,17 +92,22 @@ export abstract class BTNode implements IBTNode {
     protected open(): void { }
 
     /**
+     * 清理子节点的打开状态
+     * 一般用于装饰节点的非子节点关闭时， 用来清理子节点的打开状态
+     */
+    protected cleanupChild(): void {
+        const child = this.children[0];
+        if (child && this._local.openNodes.has(child)) {
+            this._local.openNodes.delete(child);
+        }
+    }
+
+    /**
      * 执行节点逻辑
      * 子类必须实现此方法
      * @returns 执行状态
      */
     public abstract tick(dt: number): Status;
-
-    /**
-     * 清理节点（执行完成时调用）
-     * 子类重写此方法进行状态清理
-     */
-    protected close(): void { }
 
     public getEntity<T>(): T {
         return this._local.getEntity();
