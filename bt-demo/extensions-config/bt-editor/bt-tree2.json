@@ -8,294 +8,30 @@
             "name": "记忆顺序节点",
             "position": {
                 "x": -60,
-                "y": -200
+                "y": -280
             },
             "parameters": {},
             "children": [
-                "1758005578560_0b1kuefo0",
-                "node_1757926547913_xilg11ei7",
-                "1757931183149_eeuq44vs0"
+                "1758090634327_mf36nwkdt"
             ]
         },
         {
-            "id": "node_1757926547913_xilg11ei7",
-            "className": "MemSelector",
-            "name": "记忆选择节点",
+            "id": "1758090634327_mf36nwkdt",
+            "className": "Selector",
+            "name": "选择节点",
             "position": {
                 "x": 20,
                 "y": -80
             },
             "parameters": {},
-            "children": [
-                "node_1757926550855_1hqcmi43w",
-                "node_1757926555912_18vbde5fp",
-                "1757930584200_cf9rez1qg",
-                "1757931171553_a3afal936"
-            ]
-        },
-        {
-            "id": "node_1757926550855_1hqcmi43w",
-            "className": "WaitTicks",
-            "name": "等待次数",
-            "position": {
-                "x": -220,
-                "y": 40
-            },
-            "parameters": {
-                "_max": 2
-            },
             "children": []
-        },
-        {
-            "id": "node_1757926555912_18vbde5fp",
-            "className": "WaitTime",
-            "name": "等待时间",
-            "position": {
-                "x": -60,
-                "y": 40
-            },
-            "parameters": {
-                "_max": 1
-            },
-            "children": []
-        },
-        {
-            "id": "1757930584200_cf9rez1qg",
-            "className": "Inverter",
-            "name": "反转器",
-            "position": {
-                "x": 100,
-                "y": 40
-            },
-            "parameters": {},
-            "children": [
-                "1757930606484_dbsf9bsu2"
-            ]
-        },
-        {
-            "id": "1757930606484_dbsf9bsu2",
-            "className": "WaitTicks",
-            "name": "等待次数",
-            "position": {
-                "x": 100,
-                "y": 160
-            },
-            "parameters": {
-                "_max": 0
-            },
-            "children": []
-        },
-        {
-            "id": "1757931171553_a3afal936",
-            "className": "WaitTicks",
-            "name": "等待次数",
-            "position": {
-                "x": 260,
-                "y": 40
-            },
-            "parameters": {
-                "_max": 0
-            },
-            "children": []
-        },
-        {
-            "id": "1757931183149_eeuq44vs0",
-            "className": "LimitTicks",
-            "name": "次数限制器",
-            "position": {
-                "x": 420,
-                "y": -80
-            },
-            "parameters": {
-                "_max": 1
-            },
-            "children": []
-        },
-        {
-            "id": "1758005570308_u6yo43u3b",
-            "className": "MemSelector",
-            "name": "记忆选择节点",
-            "position": {
-                "x": -540,
-                "y": 40
-            },
-            "parameters": {},
-            "children": [
-                "1758005574101_v4xhs2jo8"
-            ]
-        },
-        {
-            "id": "1758005572265_dl9lxnrki",
-            "className": "MemSequence",
-            "name": "记忆顺序节点",
-            "position": {
-                "x": -380,
-                "y": 40
-            },
-            "parameters": {},
-            "children": [
-                "1758005575213_obgfw5q7p"
-            ]
-        },
-        {
-            "id": "1758005574101_v4xhs2jo8",
-            "className": "Selector",
-            "name": "选择节点",
-            "position": {
-                "x": -540,
-                "y": 160
-            },
-            "parameters": {},
-            "children": [
-                "1758005576340_c8xf5bdhp"
-            ]
-        },
-        {
-            "id": "1758005575213_obgfw5q7p",
-            "className": "RandomSelector",
-            "name": "随机选择节点",
-            "position": {
-                "x": -380,
-                "y": 160
-            },
-            "parameters": {},
-            "children": [
-                "1758005577367_tw24xyxop"
-            ]
-        },
-        {
-            "id": "1758005576340_c8xf5bdhp",
-            "className": "Sequence",
-            "name": "顺序节点",
-            "position": {
-                "x": -540,
-                "y": 280
-            },
-            "parameters": {},
-            "children": []
-        },
-        {
-            "id": "1758005577367_tw24xyxop",
-            "className": "Parallel",
-            "name": "并行节点",
-            "position": {
-                "x": -380,
-                "y": 280
-            },
-            "parameters": {},
-            "children": []
-        },
-        {
-            "id": "1758005578560_0b1kuefo0",
-            "className": "ParallelAnySuccess",
-            "name": "并行任意成功",
-            "position": {
-                "x": -460,
-                "y": -80
-            },
-            "parameters": {},
-            "children": [
-                "1758005570308_u6yo43u3b",
-                "1758005572265_dl9lxnrki"
-            ]
         }
     ],
     "connections": [
         {
-            "id": "conn_1757926557710_7asuzelad",
-            "sourceNodeId": "node_1757926547913_xilg11ei7",
-            "targetNodeId": "node_1757926555912_18vbde5fp",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1757926560138_ragkonnfy",
-            "sourceNodeId": "node_1757926547913_xilg11ei7",
-            "targetNodeId": "node_1757926550855_1hqcmi43w",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1757930585861_b5oi5rm01",
-            "sourceNodeId": "node_1757926547913_xilg11ei7",
-            "targetNodeId": "1757930584200_cf9rez1qg",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1757930591546_aul6he8br",
+            "id": "conn_1758090635620_zajj5r8g0",
             "sourceNodeId": "1757930589538_qisfksbwz",
-            "targetNodeId": "node_1757926547913_xilg11ei7",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1757931173864_bvoj26wca",
-            "sourceNodeId": "node_1757926547913_xilg11ei7",
-            "targetNodeId": "1757931171553_a3afal936",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1757931198693_i0xwbcybx",
-            "sourceNodeId": "1757930589538_qisfksbwz",
-            "targetNodeId": "1757931183149_eeuq44vs0",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1757931631231_ecs9ql7x6",
-            "sourceNodeId": "1757930584200_cf9rez1qg",
-            "targetNodeId": "1757930606484_dbsf9bsu2",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1758005608025_lk647mty7",
-            "sourceNodeId": "1758005570308_u6yo43u3b",
-            "targetNodeId": "1758005574101_v4xhs2jo8",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1758005609490_i9jyzji9o",
-            "sourceNodeId": "1758005572265_dl9lxnrki",
-            "targetNodeId": "1758005575213_obgfw5q7p",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1758005610949_y0443s3om",
-            "sourceNodeId": "1758005575213_obgfw5q7p",
-            "targetNodeId": "1758005577367_tw24xyxop",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1758005614225_q84l7ry4u",
-            "sourceNodeId": "1758005578560_0b1kuefo0",
-            "targetNodeId": "1758005570308_u6yo43u3b",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1758005615813_q663l1nnl",
-            "sourceNodeId": "1758005578560_0b1kuefo0",
-            "targetNodeId": "1758005572265_dl9lxnrki",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1758005618014_6uj500l16",
-            "sourceNodeId": "1758005574101_v4xhs2jo8",
-            "targetNodeId": "1758005576340_c8xf5bdhp",
-            "sourcePointType": "child",
-            "targetPointType": "parent"
-        },
-        {
-            "id": "conn_1758009576474_gtfkqutb1",
-            "sourceNodeId": "1757930589538_qisfksbwz",
-            "targetNodeId": "1758005578560_0b1kuefo0",
+            "targetNodeId": "1758090634327_mf36nwkdt",
             "sourcePointType": "child",
             "targetPointType": "parent"
         }

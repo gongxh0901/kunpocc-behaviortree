@@ -3,98 +3,298 @@
     "description": "",
     "nodes": [
         {
-            "id": "1759472794685_3awlwerqg",
-            "className": "MemSelector",
-            "name": "记忆选择节点",
+            "id": "1759488688188_qejfcso50",
+            "className": "Selector",
+            "name": "选择节点",
             "position": {
                 "x": -60,
                 "y": -200
             },
             "parameters": {},
             "children": [
-                "1759472800995_k3q8rx02h",
-                "1759472799864_nait7thja",
-                "1759472798713_ay9jxznr4",
-                "1759472797759_gu3y8p1um"
-            ]
+                "1759488707759_2bmdm1fqt",
+                "1759488725107_v8u160t95",
+                "1759488737637_axpz9aqaz",
+                "1759482034741_cf3mqaqdj"
+            ],
+            "alias": "根节点"
         },
         {
-            "id": "1759472797759_gu3y8p1um",
-            "className": "Inverter",
-            "name": "反转器",
-            "position": {
-                "x": 160,
-                "y": -80
-            },
-            "parameters": {},
-            "children": []
-        },
-        {
-            "id": "1759472798713_ay9jxznr4",
+            "id": "1759479318405_bptb8ltcp",
             "className": "LimitTime",
             "name": "时间限制器",
             "position": {
-                "x": 20,
-                "y": -80
+                "x": -40,
+                "y": 40
             },
             "parameters": {
-                "_max": 1
+                "_max": 2
+            },
+            "children": [
+                "1758089736854_t55n54hkh"
+            ]
+        },
+        {
+            "id": "1759479295671_jflit2ek8",
+            "className": "LimitTime",
+            "name": "时间限制器",
+            "position": {
+                "x": -360,
+                "y": 40
+            },
+            "parameters": {
+                "_max": 2
+            },
+            "children": [
+                "1758089659917_vjumiu9hy"
+            ]
+        },
+        {
+            "id": "1758089659917_vjumiu9hy",
+            "className": "BTAnimation",
+            "name": "播放动画",
+            "position": {
+                "x": -360,
+                "y": 160
+            },
+            "parameters": {
+                "_name": "walk",
+                "_loop": true
             },
             "children": []
         },
         {
-            "id": "1759472799864_nait7thja",
-            "className": "LimitTicks",
-            "name": "次数限制器",
+            "id": "1758089736854_t55n54hkh",
+            "className": "BTAnimation",
+            "name": "播放动画",
+            "position": {
+                "x": -40,
+                "y": 160
+            },
+            "parameters": {
+                "_name": "run",
+                "_loop": true
+            },
+            "children": []
+        },
+        {
+            "id": "1758089757615_dp9tw9ka1",
+            "className": "BTAnimation",
+            "name": "播放动画",
+            "position": {
+                "x": 260,
+                "y": 40
+            },
+            "parameters": {
+                "_name": "jump",
+                "_loop": false
+            },
+            "children": []
+        },
+        {
+            "id": "1759478407706_w30m4btux",
+            "className": "BTAnimation",
+            "name": "播放动画",
+            "position": {
+                "x": 420,
+                "y": 40
+            },
+            "parameters": {
+                "_name": "idle",
+                "_loop": true
+            },
+            "children": []
+        },
+        {
+            "id": "1759481172259_xou25wj2n",
+            "className": "BTConditionRandom",
+            "name": "随机条件节点",
+            "position": {
+                "x": -520,
+                "y": 40
+            },
+            "parameters": {
+                "_value": 0.3
+            },
+            "children": []
+        },
+        {
+            "id": "1759481282875_5orqavi5y",
+            "className": "BTConditionRandom",
+            "name": "随机条件节点",
+            "position": {
+                "x": -200,
+                "y": 40
+            },
+            "parameters": {
+                "_value": 0.4
+            },
+            "children": []
+        },
+        {
+            "id": "1759481307863_ja6q4q9bz",
+            "className": "BTConditionRandom",
+            "name": "随机条件节点",
+            "position": {
+                "x": 120,
+                "y": 40
+            },
+            "parameters": {
+                "_value": 0.3
+            },
+            "children": []
+        },
+        {
+            "id": "1759482034741_cf3mqaqdj",
+            "className": "LimitTime",
+            "name": "时间限制器",
+            "position": {
+                "x": 420,
+                "y": -80
+            },
+            "parameters": {
+                "_max": 3
+            },
+            "children": [
+                "1759478407706_w30m4btux"
+            ],
+            "alias": "待机动画"
+        },
+        {
+            "id": "1759488707759_2bmdm1fqt",
+            "className": "Sequence",
+            "name": "顺序节点",
+            "position": {
+                "x": -440,
+                "y": -80
+            },
+            "parameters": {},
+            "children": [
+                "1759481172259_xou25wj2n",
+                "1759479295671_jflit2ek8"
+            ],
+            "alias": "行走动画分支"
+        },
+        {
+            "id": "1759488725107_v8u160t95",
+            "className": "Sequence",
+            "name": "顺序节点",
             "position": {
                 "x": -120,
                 "y": -80
             },
-            "parameters": {
-                "_max": 1
-            },
-            "children": []
+            "parameters": {},
+            "children": [
+                "1759481282875_5orqavi5y",
+                "1759479318405_bptb8ltcp"
+            ],
+            "alias": "奔跑动画分支"
         },
         {
-            "id": "1759472800995_k3q8rx02h",
-            "className": "Repeat",
-            "name": "重复节点",
+            "id": "1759488737637_axpz9aqaz",
+            "className": "Sequence",
+            "name": "顺序节点",
             "position": {
-                "x": -260,
+                "x": 180,
                 "y": -80
             },
-            "parameters": {
-                "_max": 1
-            },
-            "children": []
+            "parameters": {},
+            "children": [
+                "1759481307863_ja6q4q9bz",
+                "1758089757615_dp9tw9ka1"
+            ],
+            "alias": "跳跃动画分支"
         }
     ],
     "connections": [
         {
-            "id": "conn_1759472802506_ojduz0zog",
-            "sourceNodeId": "1759472794685_3awlwerqg",
-            "targetNodeId": "1759472800995_k3q8rx02h",
+            "id": "conn_1759479306749_wnwlz1638",
+            "sourceNodeId": "1759479295671_jflit2ek8",
+            "targetNodeId": "1758089659917_vjumiu9hy",
             "sourcePointType": "child",
             "targetPointType": "parent"
         },
         {
-            "id": "conn_1759472803849_dk7zwd0xt",
-            "sourceNodeId": "1759472794685_3awlwerqg",
-            "targetNodeId": "1759472799864_nait7thja",
+            "id": "conn_1759479325803_ln42r7198",
+            "sourceNodeId": "1759479318405_bptb8ltcp",
+            "targetNodeId": "1758089736854_t55n54hkh",
             "sourcePointType": "child",
             "targetPointType": "parent"
         },
         {
-            "id": "conn_1759472807533_unxo9p2b0",
-            "sourceNodeId": "1759472794685_3awlwerqg",
-            "targetNodeId": "1759472798713_ay9jxznr4",
+            "id": "conn_1759482041141_ok8gnqp0o",
+            "sourceNodeId": "1759482034741_cf3mqaqdj",
+            "targetNodeId": "1759478407706_w30m4btux",
             "sourcePointType": "child",
             "targetPointType": "parent"
         },
         {
-            "id": "conn_1759472809481_l9rcrno3b",
-            "sourceNodeId": "1759472794685_3awlwerqg",
-            "targetNodeId": "1759472797759_gu3y8p1um",
+            "id": "conn_1759488698126_dou7vxvo0",
+            "sourceNodeId": "1759488688188_qejfcso50",
+            "targetNodeId": "1759482034741_cf3mqaqdj",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488712210_gn0eom3zv",
+            "sourceNodeId": "1759488688188_qejfcso50",
+            "targetNodeId": "1759488707759_2bmdm1fqt",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488719553_mag45k9dx",
+            "sourceNodeId": "1759488707759_2bmdm1fqt",
+            "targetNodeId": "1759481172259_xou25wj2n",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488720799_ksfwij12z",
+            "sourceNodeId": "1759488707759_2bmdm1fqt",
+            "targetNodeId": "1759479295671_jflit2ek8",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488728262_shaymep9m",
+            "sourceNodeId": "1759488688188_qejfcso50",
+            "targetNodeId": "1759488725107_v8u160t95",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488732106_yg23eiw3l",
+            "sourceNodeId": "1759488725107_v8u160t95",
+            "targetNodeId": "1759481282875_5orqavi5y",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488733833_08kf67zp1",
+            "sourceNodeId": "1759488725107_v8u160t95",
+            "targetNodeId": "1759479318405_bptb8ltcp",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488741448_2in7yz3v7",
+            "sourceNodeId": "1759488688188_qejfcso50",
+            "targetNodeId": "1759488737637_axpz9aqaz",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488742689_15z7fchvc",
+            "sourceNodeId": "1759488737637_axpz9aqaz",
+            "targetNodeId": "1759481307863_ja6q4q9bz",
+            "sourcePointType": "child",
+            "targetPointType": "parent"
+        },
+        {
+            "id": "conn_1759488745870_5rllaj2oe",
+            "sourceNodeId": "1759488737637_axpz9aqaz",
+            "targetNodeId": "1758089757615_dp9tw9ka1",
             "sourcePointType": "child",
             "targetPointType": "parent"
         }

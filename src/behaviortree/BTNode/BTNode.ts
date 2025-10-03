@@ -81,6 +81,7 @@ export abstract class BTNode implements IBTNode {
         // 执行完成时清理
         if (status !== Status.RUNNING) {
             this._local.openNodes.delete(this);
+            this.close();
         }
         return status;
     }
@@ -90,7 +91,7 @@ export abstract class BTNode implements IBTNode {
      * 子类重写此方法进行状态初始化
      */
     protected open(): void { }
-
+    protected close(): void { }
     /**
      * 清理子节点的打开状态
      * 一般用于装饰节点的非子节点关闭时， 用来清理子节点的打开状态
@@ -99,6 +100,7 @@ export abstract class BTNode implements IBTNode {
         const child = this.children[0];
         if (child && this._local.openNodes.has(child)) {
             this._local.openNodes.delete(child);
+            (child as BTNode).close();
         }
     }
 
