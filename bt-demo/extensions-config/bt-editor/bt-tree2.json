@@ -35,5 +35,10 @@
             "sourcePointType": "child",
             "targetPointType": "parent"
         }
-    ]
+    ],
+    "canvasScale": 1.139190980775211,
+    "canvasOffset": {
+        "x": 266.1539154489914,
+        "y": 608.1811503312816
+    }
 }
